@@ -1,0 +1,10 @@
+{:duct.core/project-ns  chat-server
+ :duct.core/environment :production
+
+ :duct.module/logging {}
+ :duct.module.web/api {}
+ :duct.module/sql {}
+ :duct.module/cljs {:main chat-server.client}
+ 
+ :duct.router/cascading
+ []}
