@@ -2,9 +2,11 @@
  :duct.core/environment :production
 
  :duct.module/logging {}
- :duct.module.web/api {}
+ ;; :duct.module.web/api {}
  :duct.module/sql {}
- :duct.module/cljs {:main chat-server.client}
- 
- :duct.router/cascading
- []}
+ :duct.migrator/ragtime {}
+ ;; :duct.module/cljs {:main chat-server.client}
+
+ ;; :duct.router/cascading
+ ;; []
+ }

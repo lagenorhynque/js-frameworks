@@ -1,0 +1,17 @@
+version: "3"
+services:
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3307:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: chat_server_dev
+      MYSQL_PASSWORD: password123
+      MYSQL_DATABASE: chat_server
+
+volumes:
+  db-data:
+    driver: local

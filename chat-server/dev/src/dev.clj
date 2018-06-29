@@ -1,12 +1,13 @@
 (ns dev
   (:refer-clojure :exclude [test])
-  (:require [clojure.repl :refer :all]
+  (:require [chat-server.boundary.db.core]
+            [clojure.repl :refer :all]
             [fipp.edn :refer [pprint]]
             [clojure.tools.namespace.repl :refer [refresh]]
             [clojure.java.io :as io]
             [duct.core :as duct]
             [duct.core.repl :as duct-repl]
-            [duct.repl.figwheel :refer [cljs-repl]]
+            ;; [duct.repl.figwheel :refer [cljs-repl]]
             [eftest.runner :as eftest]
             [integrant.core :as ig]
             [integrant.repl :refer [clear halt go init prep reset]]
@@ -25,4 +26,4 @@
 (when (io/resource "local.clj")
   (load "local"))
 
-(integrant.repl/set-prep! (comp duct/prep read-config))
+(integrant.repl/set-prep! (comp ig/prep duct/prep read-config))
