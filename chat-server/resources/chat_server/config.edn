@@ -6,6 +6,7 @@
  :duct.migrator/ragtime {}
  ;; :duct.module/cljs {:main chat-server.client}
 
+ :app/routes {:db #ig/ref :duct.database/sql}
  ;; Consumed by chat-server.server/create-server
  ;; See http/default-interceptors for additional options you can configure
  :app/service
@@ -15,6 +16,9 @@
   ;; dev-mode. If you do, many other keys for configuring
   ;; default interceptors will be ignored.
   ;; :interceptors []
+  ;; Routes can be a function that resolve routes,
+  ;;  we can use this to set the routes to be reloadable
+  :routes #ig/ref :app/routes
 
   ;; Uncomment next line to enable CORS support, add
   ;; string(s) specifying scheme, host and port for
@@ -38,7 +42,7 @@
   ;; Either :jetty, :immutant or :tomcat (see comments in project.clj)
   ;;  This can also be your own chain provider/server-fn -- http://pedestal.io/reference/architecture-overview#_chain_provider
   :type :jetty
-  ;;::http/host "localhost"
+  ;; :host "localhost"
   :port 8080
   ;; Options to pass to the container (Jetty)
   :container-options {:h2c? true

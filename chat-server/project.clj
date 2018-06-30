@@ -2,13 +2,15 @@
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :min-lein-version "2.0.0"
-  :dependencies [[com.stuartsierra/dependency "0.2.0"]
+  :dependencies [[camel-snake-kebab "0.4.0"]
+                 [com.stuartsierra/dependency "0.2.0"]
                  [duct/core "0.6.2"]
                  [duct/database.sql.hikaricp "0.3.3"]
                  ;; [duct/module.cljs "0.3.2"]
                  [duct/module.logging "0.3.1"]
                  [duct/module.sql "0.4.2"]
                  [duct/module.web "0.6.4"]
+                 [honeysql "0.9.2"]
                  [integrant "0.7.0-alpha2"]
                  [io.pedestal/pedestal.jetty "0.5.4"]
                  [io.pedestal/pedestal.service "0.5.4"]

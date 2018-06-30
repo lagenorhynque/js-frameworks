@@ -1,12 +1,15 @@
 (ns chat-server.routes
-  (:require [io.pedestal.http :as http]
+  (:require [chat-server.handler.core :as handler]
+            [chat-server.handler.hello :as hello]
+            [integrant.core :as ig]
+            [io.pedestal.http :as http]
             [io.pedestal.http.body-params :as body-params]
-            [ring.util.response :as ring-resp]))
+            [io.pedestal.http.route :as route]))
 
-(defn respond-hello [request]
-  (ring-resp/response {:greeting "Hello, world!"}))
-
-(def common-interceptors [(body-params/body-params) http/json-body])
-
-(def routes
-  #{["/greet" :get (conj common-interceptors `respond-hello)]})
+(defmethod ig/init-key :app/routes
+  [_ {:keys [db]}]
+  (let [common-interceptors [(body-params/body-params)
+                             http/json-body
+                             (handler/attach-database db)]]
+    #(route/expand-routes
+      #{["/greet" :get (conj common-interceptors `hello/respond-hello)]})))
