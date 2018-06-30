@@ -10,6 +10,8 @@
                  [duct/module.sql "0.4.2"]
                  [duct/module.web "0.6.4"]
                  [integrant "0.7.0-alpha2"]
+                 [io.pedestal/pedestal.jetty "0.5.4"]
+                 [io.pedestal/pedestal.service "0.5.4"]
                  [mysql/mysql-connector-java "8.0.11"]
                  [org.clojure/clojure "1.9.0"]
                  ;; [org.clojure/clojurescript "1.10.339"]
@@ -31,4 +33,5 @@
                   :resource-paths ["dev/resources"]
                   :dependencies   [[eftest "0.5.2"]
                                    [integrant/repl "0.3.1"]
+                                   [io.pedestal/pedestal.service-tools "0.5.4"]
                                    [kerodon "0.9.0"]]}})

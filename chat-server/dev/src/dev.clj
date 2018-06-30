@@ -1,6 +1,7 @@
 (ns dev
   (:refer-clojure :exclude [test])
   (:require [chat-server.boundary.db.core]
+            [chat-server.service]
             [clojure.repl :refer :all]
             [fipp.edn :refer [pprint]]
             [clojure.tools.namespace.repl :refer [refresh]]
