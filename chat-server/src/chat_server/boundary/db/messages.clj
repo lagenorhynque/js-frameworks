@@ -39,7 +39,7 @@
     (db/select db (sql/build
                    :select :m.*
                    :from [[:messages :m]]
-                   :join [[:channels :c] [:= :m.channel_id :c.id]]
+                   :join [[:channels :c] [:= :m.channel-id :c.id]]
                    :where [:= :c.id channel-id]
                    :order-by [[:m.date :desc]]
                    :limit 20))))
