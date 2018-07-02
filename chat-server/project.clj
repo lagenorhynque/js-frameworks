@@ -3,13 +3,14 @@
   :url "http://example.com/FIXME"
   :min-lein-version "2.0.0"
   :dependencies [[camel-snake-kebab "0.4.0"]
+                 [ch.qos.logback/logback-classic "1.2.3" :exclusions [org.slf4j/slf4j-api]]
                  [com.stuartsierra/dependency "0.2.0"]
                  [duct/core "0.6.2"]
                  [duct/database.sql.hikaricp "0.3.3"]
                  ;; [duct/module.cljs "0.3.2"]
                  [duct/module.logging "0.3.1"]
                  [duct/module.sql "0.4.2"]
-                 [duct/module.web "0.6.4"]
+                 ;; [duct/module.web "0.6.4"]
                  [honeysql "0.9.2"]
                  [integrant "0.7.0-alpha2"]
                  [io.pedestal/pedestal.jetty "0.5.4"]
@@ -17,7 +18,9 @@
                  [mysql/mysql-connector-java "8.0.11"]
                  [org.clojure/clojure "1.9.0"]
                  ;; [org.clojure/clojurescript "1.10.339"]
-                 ]
+                 [org.slf4j/jcl-over-slf4j "1.7.25"]
+                 [org.slf4j/jul-to-slf4j "1.7.25"]
+                 [org.slf4j/log4j-over-slf4j "1.7.25"]]
   :jvm-opts ["--add-modules" "java.xml.bind"]
   :plugins [[duct/lein-duct "0.10.6"]]
   :main ^:skip-aot chat-server.main
