@@ -2,7 +2,6 @@
   (:require [chat-server.util :as util]
             [clojure.java.jdbc :as jdbc]
             [clojure.spec.alpha :as s]
-            [duct.database.sql]
             [honeysql.core :as sql]
             [integrant.core :as ig]
             [ragtime.jdbc :refer [load-resources]]))
@@ -10,22 +9,49 @@
 (defmethod ig/prep-key :duct.migrator/ragtime [_ config]
   (assoc config :migrations (load-resources "migrations")))
 
-(s/def ::db #(instance? duct.database.sql.Boundary %))
+(s/def ::db any?)
+(s/def ::sql-map (s/map-of keyword? any?))
+(s/def ::table keyword?)
+(s/def ::row-map (s/map-of keyword? any?))
+(s/def ::row-count nat-int?)
+(s/def ::row-id pos-int?)
 
-(defn select [{db :spec} sql-map]
-  (jdbc/query db (sql/format sql-map)
-              {:identifiers util/->kebab-case
-               :entities (jdbc/quoted \`)}))
+(s/fdef select
+  :args (s/cat :db ::db
+               :sql-map ::sql-map)
+  :ret (s/coll-of ::row-map))
+
+(defn select [{:keys [spec]} sql-map]
+  (jdbc/query spec (sql/format sql-map :quoting :mysql)
+              {:identifiers util/->kebab-case}))
+
+(s/fdef select-one
+  :args (s/cat :db ::db
+               :sql-map ::sql-map)
+  :ret (s/nilable ::row-map))
 
 (defn select-one [db sql-map]
   (first (select db sql-map)))
 
-(defn insert-multi! [{db :spec} table row-maps]
-  (->> (jdbc/insert-multi! db table row-maps
-                           {:identifiers util/->kebab-case
-                            :entities (comp (jdbc/quoted \`)
-                                            util/->snake_case)})
-       (map :generated_key)))
+(s/fdef insert!
+  :args (s/cat :db ::db
+               :table ::table
+               :row-map ::row-map)
+  :ret ::row-id)
 
-(defn insert! [db table row-map]
-  (first (insert-multi! db table [row-map])))
+(defn insert! [{:keys [spec]} table row-map]
+  (-> (jdbc/insert! spec table row-map {:entities (comp (jdbc/quoted \`)
+                                                        util/->snake_case)})
+      first
+      :generated_key))
+
+(s/fdef insert-multi!
+  :args (s/cat :db ::db
+               :table ::table
+               :row-maps (s/coll-of ::row-map :min-count 1))
+  :ret ::row-count)
+
+(defn insert-multi! [{:keys [spec]} table row-maps]
+  (first (jdbc/execute! spec (sql/format (sql/build :insert-into table
+                                                    :values row-maps)
+                                         :quoting :mysql))))
