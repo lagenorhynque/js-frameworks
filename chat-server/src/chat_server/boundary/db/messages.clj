@@ -26,11 +26,20 @@
 
 (defprotocol Messages
   (create-message [db message])
-  (create-messages [db messages]))
+  (create-messages [db messages])
+  (find-messages-by-channel [db channel-id]))
 
 (extend-protocol Messages
   duct.database.sql.Boundary
   (create-message [db message]
     (db/insert! db :messages message))
   (create-messages [db messages]
-    (db/insert-multi! db :messages messages)))
+    (db/insert-multi! db :messages messages))
+  (find-messages-by-channel [db channel-id]
+    (db/select db (sql/build
+                   :select :m.*
+                   :from [[:messages :m]]
+                   :join [[:channels :c] [:= :m.channel_id :c.id]]
+                   :where [:= :c.id channel-id]
+                   :order-by [[:m.date :desc]]
+                   :limit 20))))

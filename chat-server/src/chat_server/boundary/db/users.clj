@@ -17,9 +17,15 @@
   :ret ::id)
 
 (defprotocol Users
-  (create-user [db user]))
+  (create-user [db user])
+  (find-user-by-id [db id]))
 
 (extend-protocol Users
   duct.database.sql.Boundary
   (create-user [db user]
-    (db/insert! db :users user)))
+    (db/insert! db :users user))
+  (find-user-by-id [db user-id]
+    (db/select-one db (sql/build
+                       :select :*
+                       :from :users
+                       :where [:= :id user-id]))))

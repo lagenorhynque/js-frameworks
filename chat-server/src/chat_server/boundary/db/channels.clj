@@ -15,9 +15,15 @@
   :ret ::id)
 
 (defprotocol Channels
-  (create-channel [db channel]))
+  (create-channel [db channel])
+  (find-channels [db]))
 
 (extend-protocol Channels
   duct.database.sql.Boundary
   (create-channel [db channel]
-    (db/insert! db :channels channel)))
+    (db/insert! db :channels channel))
+  (find-channels [db]
+    (db/select db (sql/build
+                   :select :*
+                   :from :channels
+                   :order-by [[:name :asc]]))))
