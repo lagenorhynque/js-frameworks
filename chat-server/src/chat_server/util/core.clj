@@ -1,4 +1,4 @@
-(ns chat-server.util
+(ns chat-server.util.core
   (:require [camel-snake-kebab.core :as csk]
             [camel-snake-kebab.extras :refer [transform-keys]]))
 

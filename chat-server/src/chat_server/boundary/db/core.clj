@@ -1,13 +1,31 @@
 (ns chat-server.boundary.db.core
-  (:require [chat-server.util :as util]
+  (:require [chat-server.util.core :as util]
+            [chat-server.util.instant]
             [clojure.java.jdbc :as jdbc]
             [clojure.spec.alpha :as s]
             [honeysql.core :as sql]
             [integrant.core :as ig]
-            [ragtime.jdbc :refer [load-resources]]))
+            [ragtime.jdbc :refer [load-resources]])
+  (:import (java.time ZonedDateTime ZoneId)))
+
+;;; JDBC date time conversion
+
+(extend-protocol jdbc/IResultSetReadColumn
+  java.sql.Timestamp
+  (result-set-read-column [v _ _]
+    (ZonedDateTime/ofInstant (.toInstant v) (ZoneId/systemDefault))))
+
+(extend-protocol jdbc/ISQLValue
+  ZonedDateTime
+  (sql-value [v]
+    (java.sql.Timestamp/from (.toInstant v))))
+
+;;; DB migration
 
 (defmethod ig/prep-key :duct.migrator/ragtime [_ config]
   (assoc config :migrations (load-resources "migrations")))
+
+;;; DB access utilities
 
 (s/def ::db any?)
 (s/def ::sql-map (s/map-of keyword? any?))
