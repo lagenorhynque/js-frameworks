@@ -37,9 +37,14 @@
     (db/insert-multi! db :messages messages))
   (find-messages-by-channel [db channel-id]
     (db/select db (sql/build
-                   :select :m.*
+                   :select [:m.*
+                            [:u.uid :user-uid]
+                            [:u.name :user-name]
+                            [:u.avatar :user-avatar]
+                            [:c.name :channel-name]]
                    :from [[:messages :m]]
-                   :join [[:channels :c] [:= :m.channel-id :c.id]]
-                   :where [:= :c.id channel-id]
+                   :join [[:users :u] [:= :m.user-id :u.id]
+                          [:channels :c] [:= :m.channel-id :c.id]]
+                   :where [:= :m.channel-id channel-id]
                    :order-by [[:m.date :desc]]
                    :limit 20))))
