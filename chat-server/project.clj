@@ -39,7 +39,10 @@
    :profiles/dev {}
    :project/dev  {:source-paths   ["dev/src"]
                   :resource-paths ["dev/resources"]
-                  :dependencies   [[eftest "0.5.2"]
+                  :dependencies   [[com.bhauman/rebel-readline "0.1.4"]
+                                   [eftest "0.5.2"]
                                    [integrant/repl "0.3.1"]
                                    [io.pedestal/pedestal.service-tools "0.5.4"]
-                                   [kerodon "0.9.0"]]}})
+                                   [kerodon "0.9.0"]]
+                  :aliases {"rebel" ^{:doc "Run REPL with rebel-readline."}
+                            ["trampoline" "run" "-m" "rebel-readline.main"]}}})
