@@ -25,6 +25,8 @@
   :jvm-opts ["--add-modules" "java.xml.bind"]
   :plugins [[duct/lein-duct "0.10.6"]]
   :main ^:skip-aot chat-server.main
+  :source-paths   ["src/clj"]
+  :test-paths ["test/clj"]
   :resource-paths ["resources" "target/resources"]
   :prep-tasks     ["javac" "compile" ["run" ":duct/compiler"]]
   :profiles
