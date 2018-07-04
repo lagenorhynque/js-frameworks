@@ -1,5 +1,9 @@
 (ns chat-server.handler.hello
-  (:require [ring.util.response :as ring-resp]))
+  (:require [ring.util.http-response :as response]
+            [struct.core :as st]))
+
+(def validations
+  {::respond-hello [[:foo st/number-str]]})
 
 (defn respond-hello [request]
-  (ring-resp/response {:greeting "Hello, world!"}))
+  (response/ok {:greeting "Hello, world!"}))

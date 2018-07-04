@@ -4,13 +4,14 @@
             [chat-server.boundary.db.users :as users]
             [clojure.spec.alpha :as s]
             [duct.database.sql]
-            [honeysql.core :as sql]))
+            [honeysql.core :as sql])
+  (:import (java.time ZonedDateTime)))
 
 (s/def ::id pos-int?)
 (s/def ::body string?)
 (s/def ::user-id ::users/id)
 (s/def ::channel-id ::channels/id)
-(s/def ::date any?)
+(s/def ::date #(instance? ZonedDateTime %))
 (s/def ::message (s/keys :req-un [::body ::user-id ::channel-id]
                          :opt-un [::id ::date]))
 
