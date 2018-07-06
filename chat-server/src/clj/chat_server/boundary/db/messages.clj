@@ -47,5 +47,5 @@
                    :join [[:users :u] [:= :m.user-id :u.id]
                           [:channels :c] [:= :m.channel-id :c.id]]
                    :where [:= :m.channel-id channel-id]
-                   :order-by [[:m.date :desc]]
+                   :order-by [[:m.date :desc] [:m.id :desc]]
                    :limit 20))))

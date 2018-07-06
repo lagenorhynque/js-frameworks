@@ -26,4 +26,4 @@
     (db/select db (sql/build
                    :select :*
                    :from :channels
-                   :order-by [[:name :asc]]))))
+                   :order-by [[:name :asc] [:id :asc]]))))
