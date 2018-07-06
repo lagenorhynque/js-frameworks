@@ -1,6 +1,7 @@
 (ns chat-server.main
   (:gen-class)
-  (:require [clojure.java.io :as io]
+  (:require [chat-server.boundary.db.core]
+            [clojure.java.io :as io]
             [duct.core :as duct]))
 
 (duct/load-hierarchy)

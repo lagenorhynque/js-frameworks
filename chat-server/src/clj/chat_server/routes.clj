@@ -13,7 +13,7 @@
 
 ;;; routing
 
-(defmethod ig/init-key :app/routes
+(defmethod ig/init-key ::routes
   [_ {:keys [db]}]
   (let [common-interceptors [(body-params/body-params)
                              http/json-body

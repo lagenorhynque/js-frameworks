@@ -6,10 +6,10 @@
  :duct.migrator/ragtime {}
  ;; :duct.module/cljs {:main chat-server.client}
 
- :app/routes {:db #ig/ref :duct.database/sql}
+ :chat-server.routes/routes {:db #ig/ref :duct.database/sql}
  ;; Consumed by chat-server.server/create-server
  ;; See http/default-interceptors for additional options you can configure
- :app/service
+ :chat-server.server/service
  #:io.pedestal.http
  {;; You can bring your own non-default interceptors. Make
   ;; sure you include routing and set it up right for
@@ -18,7 +18,7 @@
   ;; :interceptors []
   ;; Routes can be a function that resolve routes,
   ;;  we can use this to set the routes to be reloadable
-  :routes #ig/ref :app/routes
+  :routes #ig/ref :chat-server.routes/routes
 
   ;; Uncomment next line to enable CORS support, add
   ;; string(s) specifying scheme, host and port for
@@ -51,5 +51,5 @@
                       ;; :key-password "password"
                       ;; :ssl-port 8443
                       :ssl? false}}
- :app/server {:service #ig/ref :app/service
-              :dev? false}}
+ :chat-server.server/server {:service #ig/ref :chat-server.server/service
+                             :dev? false}}
