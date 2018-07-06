@@ -1,15 +1,28 @@
 (ns chat-server.handler.core
-  (:require [ring.util.http-response :as response]
+  (:require [chat-server.util.core :as util]
+            [ring.util.http-response :as response]
             [struct.core :as st]))
+
+(def attach-tx-data
+  {:name ::attach-tx-data
+   :enter
+   (fn [context]
+     (let [params (merge (get-in context [:request :json-params])
+                         (get-in context [:request :query-params])
+                         (get-in context [:request :path-params]))]
+       (assoc-in context [:request :tx-data] (util/transform-keys-to-kebab params))))
+   :leave
+   (fn [context]
+     (update context :response util/transform-keys-to-snake))})
 
 (defn validate [schemas]
   {:name ::validate
    :enter
    (fn [context]
-     (let [params (get-in context [:request :params])
+     (let [tx-data (get-in context [:request :tx-data])
            route-name (get-in context [:route :route-name])
            schema (get schemas route-name [])
-           [errors validated-data] (st/validate params schema
+           [errors validated-data] (st/validate tx-data schema
                                                 {:strip true})]
        (if (empty? errors)
          (assoc-in context [:request :tx-data] validated-data)

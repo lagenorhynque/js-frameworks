@@ -7,7 +7,7 @@
             [honeysql.core :as sql])
   (:import (java.time ZonedDateTime)))
 
-(s/def ::id pos-int?)
+(s/def ::id integer?)
 (s/def ::body string?)
 (s/def ::user-id ::users/id)
 (s/def ::channel-id ::channels/id)
