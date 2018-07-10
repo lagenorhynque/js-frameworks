@@ -1,0 +1,29 @@
+{:swagger "2.0"
+ :info {:title "chat-server"
+        :description "チャットサーバAPI"
+        :version "1.0.0"}
+ :host "localhost:8080"
+ :basePath "/api"
+ :schemes ["http"]
+ :consumes ["application/json;charset=utf-8"]
+ :produces ["application/json;charset=utf-8"]
+ :tags [{:name "hello"
+         :description "Hello"}
+        {:name "channels"
+         :description "チャンネル"}]
+ :paths {"/greet"
+         {:get {:tags ["hello"]
+                :summary "挨拶する"
+                :description ""
+                :operationId "hello"
+                :parameters [{:in "query"
+                              :name "foo"
+                              :required false
+                              :type "number"
+                              :description "Foo"}]
+                :responses {"200"
+                            {:description "OK"
+                             :schema {:type "object"
+                                      :example {:data {:greet_from_server "Hello, world!"}}}}
+                            "400"
+                            {:description "Bad Request"}}}}}}

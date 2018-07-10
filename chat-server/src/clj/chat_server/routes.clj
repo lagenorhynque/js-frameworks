@@ -23,13 +23,13 @@
                              (handler/validate validation-schemas)
                              (handler/attach-database db)]]
     #(route/expand-routes
-      #{["/greet" :any (conj common-interceptors
-                             `hello/respond-hello)]
-        ["/channels" :get (conj common-interceptors
-                                `channels/list-channels)]
-        ["/channels" :post (conj common-interceptors
-                                 `channels/create-channel)]
-        ["/channels/:channel-id/messages" :get (conj common-interceptors
-                                                     `channels/list-channel-messages)]
-        ["/channels/:channel-id/messages" :post (conj common-interceptors
-                                                      `channels/create-message)]})))
+      #{["/api/greet" :any (conj common-interceptors
+                                 `hello/respond-hello)]
+        ["/api/channels" :get (conj common-interceptors
+                                    `channels/list-channels)]
+        ["/api/channels" :post (conj common-interceptors
+                                     `channels/create-channel)]
+        ["/api/channels/:channel-id/messages" :get (conj common-interceptors
+                                                         `channels/list-channel-messages)]
+        ["/api/channels/:channel-id/messages" :post (conj common-interceptors
+                                                          `channels/create-message)]})))

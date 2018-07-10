@@ -1,0 +1,11 @@
+{
+  "name": "chat-server",
+  "version": "1.0.0",
+  "description": "chat server",
+  "repository": "https://github.com/lagenorhynque/js-frameworks",
+  "license": "ISC",
+  "devDependencies": {
+    "dredd": "^5.1.11",
+    "swagger-cli": "^2.1.0"
+  }
+}

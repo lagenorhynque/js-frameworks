@@ -13,3 +13,7 @@ pom.xml.asc
 /dev/resources/local.edn
 /dev/src/local.clj
 .rebel_readline_history
+swagger.yaml
+/.cpcache
+node_modules/
+npm-debug.log*

@@ -12,10 +12,10 @@
                      [:body st/required st/string]]})
 
 (defn list-channels [{:keys [db]}]
-  (response/ok (db.channels/find-channels db)))
+  (response/ok {:data (db.channels/find-channels db)}))
 
 (defn list-channel-messages [{:keys [db tx-data]}]
-  (response/ok (db.messages/find-messages-by-channel db (:channel-id tx-data))))
+  (response/ok {:data (db.messages/find-messages-by-channel db (:channel-id tx-data))}))
 
 (defn create-channel [{:keys [db tx-data]}]
   (let [channel-name (:name tx-data)
@@ -27,8 +27,8 @@
                    :user-id 1
                    :channel-id channel-id}]]
     (db.messages/create-messages db messages)
-    (response/ok {:id channel-id})))
+    (response/ok {:data {:id channel-id}})))
 
 (defn create-message [{:keys [db tx-data]}]
   (let [message-id (db.messages/create-message db tx-data)]
-    (response/ok {:id message-id})))
+    (response/ok {:data {:id message-id}})))

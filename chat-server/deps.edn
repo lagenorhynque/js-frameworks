@@ -1,0 +1,3 @@
+{:deps
+ {io.forward/yaml {:mvn/version "1.0.9"}}
+ :paths ["scripts"]}

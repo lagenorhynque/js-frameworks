@@ -6,4 +6,4 @@
   {::respond-hello [[:foo st/number-str]]})
 
 (defn respond-hello [request]
-  (response/ok {:greeting-from-server "Hello, world!"}))
+  (response/ok {:data {:greeting-from-server "Hello, world!"}}))
