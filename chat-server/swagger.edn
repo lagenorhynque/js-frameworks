@@ -1,29 +1,154 @@
 {:swagger "2.0"
  :info {:title "chat-server"
-        :description "チャットサーバAPI"
+        :description "チャットAPI"
         :version "1.0.0"}
  :host "localhost:8080"
  :basePath "/api"
- :schemes ["http"]
+ :schemes [:http]
  :consumes ["application/json;charset=utf-8"]
  :produces ["application/json;charset=utf-8"]
- :tags [{:name "hello"
+ :tags [{:name :hello
          :description "Hello"}
-        {:name "channels"
+        {:name :channels
          :description "チャンネル"}]
  :paths {"/greet"
-         {:get {:tags ["hello"]
+         {:get {:tags [:hello]
                 :summary "挨拶する"
                 :description ""
-                :operationId "hello"
-                :parameters [{:in "query"
-                              :name "foo"
+                :parameters [{:in :query
+                              :name :foo
+                              :description "Foo"
                               :required false
-                              :type "number"
-                              :description "Foo"}]
-                :responses {"200"
+                              :type :number}]
+                :responses {200
                             {:description "OK"
-                             :schema {:type "object"
-                                      :example {:data {:greet_from_server "Hello, world!"}}}}
-                            "400"
-                            {:description "Bad Request"}}}}}}
+                             :schema
+                             {:type :object
+                              :example {:data {:greet_from_server "Hello, world!"}}}}
+                            400
+                            {:$ref "#/responses/bad_request"}}}}
+         "/channels"
+         {:get {:tags [:channels]
+                :summary "チャンネル名の一覧取得"
+                :description ""
+                :parameters []
+                :responses {200
+                            {:description "OK"
+                             :schema
+                             {:type :object
+                              :properties
+                              {:data {:type :array
+                                      :items {:$ref "#/definitions/channel"}}}
+                              :example {:data [{:id 1
+                                                :name "general"}
+                                               {:id 2
+                                                :name "random"}]}}}}}
+          :post {:tags [:channels]
+                 :summary "チャンネルの作成"
+                 :description ""
+                 :parameters [{:in :body
+                               :name :channel
+                               :description "チャンネル"
+                               :required true
+                               :schema {:$ref "#/definitions/channel"}}]
+                 :responses {200
+                             {:description "OK"
+                              :schema
+                              {:type :object
+                               :properties
+                               {:data {:type :object
+                                       :properties
+                                       {:id {:type :integer
+                                             :description "チャンネルID"}}}}
+                               :example {:data {:id 3}}}}
+                             400
+                             {:$ref "#/responses/bad_request"}}}}
+         "/channels/{channel_id}/messages"
+         {:get {:tags [:channels]
+                :summary "チャンネル内メッセージの一覧取得"
+                :description ""
+                :parameters [{:in :path
+                              :name :channel_id
+                              :description "チャンネルID"
+                              :required true
+                              :type :integer
+                              :x-example 1}]
+                :responses {200
+                            {:description "OK"
+                             :schema
+                             {:type :object
+                              :properties
+                              {:data {:type :array
+                                      :items {:$ref "#/definitions/message"}}}
+                              :example {:data [{:id 1
+                                                :body "Welcome to general channel!"
+                                                :user_id 1
+                                                :channel_id 1
+                                                :user_uid "anon"
+                                                :user_name "Anonymous"
+                                                :user_avatar ""
+                                                :channel_name "general"}
+                                               {:id 2
+                                                :body "はじめてのメッセージを投稿してみましょう。"
+                                                :user_id 1
+                                                :channel_id 1}]}}}
+                            400
+                            {:$ref "#/responses/bad_request"}
+                            404
+                            {:$ref "#/responses/not_found"}}}
+          :post {:tags [:channels]
+                 :summary "指定チャンネルへのメッセージの追加"
+                 :description ""
+                 :parameters [{:in :path
+                               :name :channel_id
+                               :description "チャンネルID"
+                               :required true
+                               :type :integer
+                               :x-example 1}
+                              {:in :body
+                               :name :message
+                               :description "メッセージ"
+                               :required true
+                               :schema {:$ref "#/definitions/message"}}]
+                 :responses {200
+                             {:description "OK"
+                              :schema
+                              {:type :object
+                               :properties
+                               {:data {:type :object
+                                       :properties
+                                       {:id {:type :integer
+                                             :description "メッセージID"}}}}
+                               :example {:data {:id 3}}}}
+                             400
+                             {:$ref "#/responses/bad_request"}
+                             404
+                             {:$ref "#/responses/not_found"}}}}}
+ :responses {:bad_request {:description "Bad Request"
+                           :schema {:$ref "#/definitions/error"}}
+             :not_found {:description "Not Found"
+                         :schema {:$ref "#/definitions/error"}}}
+ :definitions {:channel {:type :object
+                         :properties
+                         {:id {:type :integer
+                               :description "チャンネルID"}
+                          :name {:type :string
+                                 :description "チャンネル名"}}
+                         :required [:name]
+                         :example {:name "times_twitter"}}
+               :message {:type :object
+                         :properties
+                         {:id {:type :integer
+                               :description "メッセージID"}
+                          :body {:type :string
+                                 :description "メッセージ本文"}
+                          :user_id {:type :integer
+                                    :description "ユーザID"}
+                          :channel_id {:type :integer
+                                       :description "チャンネルID"}}
+                         :required [:body :user_id]
+                         :example {:body "Hello, world!"
+                                   :user_id 2}}
+               :error {:type :object
+                       :properties
+                       {:errors {:type :object}}}}}
