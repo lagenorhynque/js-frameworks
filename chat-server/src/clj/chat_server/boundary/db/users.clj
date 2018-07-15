@@ -16,6 +16,11 @@
                :user ::user)
   :ret ::id)
 
+(s/fdef find-user-by-id
+  :args (s/cat :db ::db/db
+               :user-id ::id)
+  :ret (s/nilable ::user))
+
 (defprotocol Users
   (create-user [db user])
   (find-user-by-id [db id]))

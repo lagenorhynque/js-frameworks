@@ -14,6 +14,10 @@
                :channel ::channel)
   :ret ::id)
 
+(s/fdef find-channels
+  :args (s/cat :db ::db/db)
+  :ret (s/coll-of ::channel))
+
 (defprotocol Channels
   (create-channel [db channel])
   (find-channels [db]))

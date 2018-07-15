@@ -12,8 +12,12 @@
 (s/def ::user-id ::users/id)
 (s/def ::channel-id ::channels/id)
 (s/def ::date #(instance? ZonedDateTime %))
+(s/def ::user-uid ::users/uid)
+(s/def ::user-name ::users/name)
+(s/def ::user-avatar ::users/avatar)
+(s/def ::channel-name ::channels/name)
 (s/def ::message (s/keys :req-un [::body ::user-id ::channel-id]
-                         :opt-un [::id ::date]))
+                         :opt-un [::id ::date ::user-uid ::user-name ::user-avatar ::channel-name]))
 
 (s/fdef create-message
   :args (s/cat :db ::db/db
@@ -24,6 +28,11 @@
   :args (s/cat :db ::db/db
                :messages (s/coll-of ::message))
   :ret (s/coll-of ::id))
+
+(s/fdef find-messages-by-channel
+  :args (s/cat :db ::db/db
+               :channel-id ::channel-id)
+  :ret (s/coll-of ::message))
 
 (defprotocol Messages
   (create-message [db message])
