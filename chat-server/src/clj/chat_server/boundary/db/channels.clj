@@ -18,9 +18,15 @@
   :args (s/cat :db ::db/db)
   :ret (s/coll-of ::channel))
 
+(s/fdef find-channel-by-id
+  :args (s/cat :db ::db/db
+               :channel-id ::id)
+  :ret (s/nilable ::channel))
+
 (defprotocol Channels
   (create-channel [db channel])
-  (find-channels [db]))
+  (find-channels [db])
+  (find-channel-by-id [db channel-id]))
 
 (extend-protocol Channels
   duct.database.sql.Boundary
@@ -30,4 +36,9 @@
     (db/select db (sql/build
                    :select :*
                    :from :channels
-                   :order-by [[:name :asc] [:id :asc]]))))
+                   :order-by [[:name :asc] [:id :asc]])))
+  (find-channel-by-id [db channel-id]
+    (db/select-one db (sql/build
+                       :select :*
+                       :from :channels
+                       :where [:= :id channel-id]))))

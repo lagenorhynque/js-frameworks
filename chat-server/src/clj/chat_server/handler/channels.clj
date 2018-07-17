@@ -1,6 +1,7 @@
 (ns chat-server.handler.channels
   (:require [chat-server.boundary.db.channels :as db.channels]
             [chat-server.boundary.db.messages :as db.messages]
+            [chat-server.boundary.db.users :as db.users]
             [ring.util.http-response :as response]
             [struct.core :as st]))
 
@@ -15,7 +16,9 @@
   (response/ok {:data (db.channels/find-channels db)}))
 
 (defn list-channel-messages [{:keys [db tx-data]}]
-  (response/ok {:data (db.messages/find-messages-by-channel db (:channel-id tx-data))}))
+  (if (db.channels/find-channel-by-id db (:channel-id tx-data))
+    (response/ok {:data (db.messages/find-messages-by-channel db (:channel-id tx-data))})
+    (response/not-found {:errors {:channel-id "doesn't exist"}})))
 
 (defn create-channel [{:keys [db tx-data]}]
   (let [channel-name (:name tx-data)
@@ -30,5 +33,9 @@
     (response/ok {:data {:id channel-id}})))
 
 (defn create-message [{:keys [db tx-data]}]
-  (let [message-id (db.messages/create-message db tx-data)]
-    (response/ok {:data {:id message-id}})))
+  (if (db.channels/find-channel-by-id db (:channel-id tx-data))
+    (if (db.users/find-user-by-id db (:user-id tx-data))
+      (let [message-id (db.messages/create-message db tx-data)]
+        (response/ok {:data {:id message-id}}))
+      (response/bad-request {:errors {:user-id "doesn't exist"}}))
+    (response/not-found {:errors {:channel-id "doesn't exist"}})))
