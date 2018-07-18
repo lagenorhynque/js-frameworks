@@ -3,6 +3,7 @@
             [chat-server.util.instant]
             [clojure.java.jdbc :as jdbc]
             [clojure.spec.alpha :as s]
+            [duct.database.sql]
             [honeysql.core :as sql]
             [integrant.core :as ig]
             [ragtime.jdbc :refer [load-resources]])
@@ -33,6 +34,19 @@
 (s/def ::row-map (s/map-of keyword? any?))
 (s/def ::row-count nat-int?)
 (s/def ::row-id pos-int?)
+
+(s/fdef with-transaction
+  :args (s/cat :binding (s/tuple any?)
+               :body (s/* any?)))
+
+(defmacro with-transaction [[db] & body]
+  (if (simple-symbol? db)
+    `(jdbc/with-db-transaction [~db (:spec ~db)]
+       (let [~db (duct.database.sql/->Boundary ~db)]
+         ~@body))
+    `(jdbc/with-db-transaction [~'db (:spec ~db)]
+       (let [~'db (duct.database.sql/->Boundary ~'db)]
+         ~@body))))
 
 (s/fdef select
   :args (s/cat :db ::db
