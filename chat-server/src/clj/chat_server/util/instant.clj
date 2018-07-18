@@ -6,11 +6,11 @@
 ;;; tagged literal `#time/inst`
 
 (defmethod print-method ZonedDateTime
-  [^ZonedDateTime dt out]
+  [^ZonedDateTime dt ^java.io.Writer out]
   (.write out (str "#time/inst \"" (time/format :iso-offset-date-time dt) "\"") ))
 
 (defmethod print-dup ZonedDateTime
-  [^ZonedDateTime dt out]
+  [^ZonedDateTime dt ^java.io.Writer out]
   (print-method dt out))
 
 (defn ->time-inst [dt-str]
