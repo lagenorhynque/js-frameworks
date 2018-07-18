@@ -1,4 +1,4 @@
-(ns chat-server.handler.core
+(ns chat-server.interceptor
   (:require [chat-server.util.core :as util]
             [ring.util.http-response :as response]
             [struct.core :as st]))

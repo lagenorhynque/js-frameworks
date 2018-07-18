@@ -1,7 +1,7 @@
 (ns chat-server.routes
-  (:require [chat-server.handler.core :as handler]
+  (:require [chat-server.handler.channels :as channels]
             [chat-server.handler.hello :as hello]
-            [chat-server.handler.channels :as channels]
+            [chat-server.interceptor :as interceptor]
             [integrant.core :as ig]
             [io.pedestal.http :as http]
             [io.pedestal.http.body-params :as body-params]
@@ -10,8 +10,8 @@
 ;;; validation rules
 
 (def validation-schemas
-  (merge hello/validations
-         channels/validations))
+  (merge channels/validations
+         hello/validations))
 
 ;;; routing
 
@@ -19,9 +19,9 @@
   [_ {:keys [db]}]
   (let [common-interceptors [(body-params/body-params)
                              http/json-body
-                             handler/attach-tx-data
-                             (handler/validate validation-schemas)
-                             (handler/attach-database db)]]
+                             interceptor/attach-tx-data
+                             (interceptor/validate validation-schemas)
+                             (interceptor/attach-database db)]]
     #(route/expand-routes
       #{["/api/greet" :any (conj common-interceptors
                                  `hello/respond-hello)]
