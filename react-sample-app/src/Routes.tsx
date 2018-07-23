@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { Switch } from 'react-router';
 import { BrowserRouter, Redirect, Route } from 'react-router-dom';
 import { ChannelList } from './components';
+import { Channel } from './containers';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 
@@ -14,7 +15,7 @@ const routes = <BrowserRouter>
         <Switch>
           <Route
             exact={true} path='/channels/:channelId'
-            render={props => <h2>{props.match.params.channelId}</h2>} />
+            component={Channel} />
           <Route
             exact={true} path='/'
             render={props => <h1>Sample Application</h1> } />
