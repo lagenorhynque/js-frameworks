@@ -9,17 +9,13 @@
 (def validations
   {::list-channel-messages [[:channel-id st/required st/number-str]]
    ::create-channel [[:name st/required st/string]]
+   ::fetch-channel [[:channel-id st/required st/number-str]]
    ::create-message [[:channel-id st/required st/number-str]
                      [:user-id st/required st/number-str]
                      [:body st/required st/string]]})
 
 (defn list-channels [{:keys [db]}]
   (response/ok {:data (db.channels/find-channels db)}))
-
-(defn list-channel-messages [{:keys [db tx-data]}]
-  (if (db.channels/find-channel-by-id db (:channel-id tx-data))
-    (response/ok {:data (db.messages/find-messages-by-channel db (:channel-id tx-data))})
-    (response/not-found {:errors {:channel-id "doesn't exist"}})))
 
 (defn create-channel [{:keys [db tx-data]}]
   (with-transaction [db]
@@ -33,6 +29,16 @@
                      :channel-id channel-id}]]
       (db.messages/create-messages db messages)
       (response/ok {:data {:id channel-id}}))))
+
+(defn fetch-channel [{:keys [db tx-data]}]
+  (if-let [channel (db.channels/find-channel-by-id db (:channel-id tx-data))]
+    (response/ok {:data channel})
+    (response/not-found {:errors {:channel-id "doesn't exist"}})))
+
+(defn list-channel-messages [{:keys [db tx-data]}]
+  (if (db.channels/find-channel-by-id db (:channel-id tx-data))
+    (response/ok {:data (db.messages/find-messages-by-channel db (:channel-id tx-data))})
+    (response/not-found {:errors {:channel-id "doesn't exist"}})))
 
 (defn create-message [{:keys [db tx-data]}]
   (with-transaction [db]

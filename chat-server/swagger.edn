@@ -63,6 +63,28 @@
                                :example {:data {:id 3}}}}
                              400
                              {:$ref "#/responses/bad_request"}}}}
+         "/channels/{channel_id}"
+         {:get {:tags [:channels]
+                :summary "チャンネルの取得"
+                :description ""
+                :parameters [{:in :path
+                              :name :channel_id
+                              :description "チャンネルID"
+                              :required true
+                              :type :integer
+                              :x-example 1}]
+                :responses {200
+                            {:description "OK"
+                             :schema
+                             {:type :object
+                              :properties
+                              {:data {:$ref "#/definitions/channel"}}
+                              :example {:data {:id 1
+                                               :name "general"}}}}
+                            400
+                            {:$ref "#/responses/bad_request"}
+                            404
+                            {:$ref "#/responses/not_found"}}}}
          "/channels/{channel_id}/messages"
          {:get {:tags [:channels]
                 :summary "チャンネル内メッセージの一覧取得"

@@ -29,6 +29,8 @@
                                     `channels/list-channels)]
         ["/api/channels" :post (conj common-interceptors
                                      `channels/create-channel)]
+        ["/api/channels/:channel-id" :get (conj common-interceptors
+                                    `channels/fetch-channel)]
         ["/api/channels/:channel-id/messages" :get (conj common-interceptors
                                                          `channels/list-channel-messages)]
         ["/api/channels/:channel-id/messages" :post (conj common-interceptors
