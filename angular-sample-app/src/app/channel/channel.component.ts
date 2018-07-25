@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ChannelService } from '../services/channel.service';
+import { Channel } from '../shared/models/channel';
 
 @Component({
   selector: 'app-channel',
@@ -7,15 +9,18 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./channel.component.css']
 })
 export class ChannelComponent implements OnInit {
-  public channelId: number;
+  public channel: Channel = { id: null };
 
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private channelService: ChannelService
   ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.channelId = params['channelId'];
+      this.channelService.fetch(params['channelId']).subscribe(data => {
+        this.channel = data.data;
+      });
     });
   }
 

@@ -18,9 +18,16 @@ export class MessageFeedComponent implements OnInit {
     private messageService: MessageService
   ) { }
 
-  ngOnInit() {
+  refresh() {
     this.messagesObservable = this.route.params.pipe(switchMap(
       params => this.messageService.fetch(params['channelId']).pipe(map(data => data.data))));
+  }
+
+  ngOnInit() {
+    this.refresh();
+    this.messageService.waiting.subscribe(_ => {
+      this.refresh();
+    });
   }
 
 }
