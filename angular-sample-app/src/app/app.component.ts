@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Angular sample app';
+  channels = [{ id: 1, name: 'general' }, { id: 2, name: 'random' }];
 }
