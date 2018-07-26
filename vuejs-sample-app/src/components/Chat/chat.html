@@ -1,0 +1,24 @@
+<div class="view">
+  <div class="channel">
+    <ul>
+      <li v-for="(channel) in channels">
+        <router-link :to="{ name: 'channel', params: { channelId: channel.id } }">
+          {{ channel.name }}
+        </router-link>
+      </li>
+    </ul>
+  </div>
+
+  <div class="channel-name">
+    {{ $route.params.channelId }}
+  </div>
+
+  <div class="messages">
+    <message-list :messages="messages" />
+  </div>
+
+  <div class="form">
+    <input type="text" v-model="message">
+    <input type="button" value="SEND" @click="sendMessage">
+  </div>
+</div>

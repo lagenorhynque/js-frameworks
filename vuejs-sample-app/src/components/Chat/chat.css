@@ -1,0 +1,29 @@
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.view {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: auto 1fr auto;
+}
+
+.channel {
+  grid-row: 1 / span 3;
+  grid-column: 1 / 2;
+}
+
+.channel-name {
+  grid-area: 1 / 2;
+}
+
+.messages {
+  grid-area: 2 / 2;
+  height: 300px;
+  overflow: scroll;
+}
+
+.form {
+  grid-area: 3 / 2;
+}
