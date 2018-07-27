@@ -4,6 +4,11 @@
             [re-frame.core :as re-frame]))
 
 (re-frame/reg-event-db
- ::initialize-db
- (fn-traced [_ _]
-   db/default-db))
+  ::initialize-db
+  (fn-traced [_ _]
+    db/default-db))
+
+(re-frame/reg-event-db
+  ::set-current-route
+  (fn [db [_ route]]
+    (assoc db :route route)))

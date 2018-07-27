@@ -4,10 +4,4 @@
                             ;; clojure.spec
                             (fdef 1)
                             ;; test.check
-                            (for-all :defn)
-                            ;; re-frame
-                            (reg-cofx :defn)
-                            (reg-event-db :defn)
-                            (reg-event-fx :defn)
-                            (reg-fx :defn)
-                            (reg-sub :defn))))))
+                            (for-all :defn))))))

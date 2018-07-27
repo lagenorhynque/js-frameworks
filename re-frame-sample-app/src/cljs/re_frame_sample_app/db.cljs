@@ -1,4 +1,4 @@
 (ns re-frame-sample-app.db)
 
 (def default-db
-  {:name "re-frame"})
+  {:route {:handler :re-frame-sample-app.views.home/view}})

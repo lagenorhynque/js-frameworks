@@ -18,7 +18,7 @@
                  [io.pedestal/pedestal.jetty "0.5.4"]
                  [io.pedestal/pedestal.service "0.5.4"]
                  [metosin/ring-http-response "0.9.0"]
-                 [mysql/mysql-connector-java "8.0.11"]
+                 [mysql/mysql-connector-java "8.0.12"]
                  [org.clojure/clojure "1.9.0"]
                  ;; [org.clojure/clojurescript "1.10.339"]
                  [org.slf4j/jcl-over-slf4j "1.7.25"]
