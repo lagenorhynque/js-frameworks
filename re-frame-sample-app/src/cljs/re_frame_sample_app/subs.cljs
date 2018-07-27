@@ -1,6 +1,5 @@
 (ns re-frame-sample-app.subs
-  (:require
-   [re-frame.core :as re-frame]))
+  (:require [re-frame.core :as re-frame]))
 
 (re-frame/reg-sub
  ::name

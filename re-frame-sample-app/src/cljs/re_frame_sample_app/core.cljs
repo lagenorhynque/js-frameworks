@@ -1,12 +1,10 @@
 (ns re-frame-sample-app.core
-  (:require
-   [reagent.core :as reagent]
-   [re-frame.core :as re-frame]
-   [re-frame-sample-app.events :as events]
-   [re-frame-sample-app.views :as views]
-   [re-frame-sample-app.config :as config]
-   ))
-
+  (:require [cljsjs.material-ui]
+            [re-frame-sample-app.config :as config]
+            [re-frame-sample-app.events :as events]
+            [re-frame-sample-app.views :as views]
+            [re-frame.core :as re-frame]
+            [reagent.core :as reagent]))
 
 (defn dev-setup []
   (when config/debug?

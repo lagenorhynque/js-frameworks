@@ -1,9 +1,7 @@
 (ns re-frame-sample-app.events
-  (:require
-   [re-frame.core :as re-frame]
-   [re-frame-sample-app.db :as db]
-   [day8.re-frame.tracing :refer-macros [fn-traced defn-traced]]
-   ))
+  (:require [day8.re-frame.tracing :refer-macros [fn-traced defn-traced]]
+            [re-frame-sample-app.db :as db]
+            [re-frame.core :as re-frame]))
 
 (re-frame/reg-event-db
  ::initialize-db

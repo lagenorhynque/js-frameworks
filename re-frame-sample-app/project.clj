@@ -1,8 +1,15 @@
 (defproject re-frame-sample-app "0.1.0-SNAPSHOT"
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.10.238"]
-                 [reagent "0.7.0"]
-                 [re-frame "0.10.5"]]
+  :dependencies [[bidi "2.1.3"]
+                 [cljs-react-material-ui "0.2.50"]
+                 [cljsjs/react "16.4.1-0"]
+                 [cljsjs/react-dom "16.4.1-0"]
+                 [day8.re-frame/http-fx "0.1.6"]
+                 [org.clojure/clojure "1.9.0"]
+                 [org.clojure/clojurescript "1.10.339"]
+                 [re-frame "0.10.5"]
+                 [reagent "0.8.1"]
+                 [stylefy "1.7.0"]
+                 [venantius/accountant "0.2.4"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]]
 
@@ -20,13 +27,13 @@
   :profiles
   {:dev
    {:dependencies [[binaryage/devtools "0.9.10"]
+                   [cider/piggieback "0.3.6"]
                    [day8.re-frame/re-frame-10x "0.3.3"]
                    [day8.re-frame/tracing "0.5.1"]
-                   [figwheel-sidecar "0.5.16"]
-                   [cider/piggieback "0.3.5"]]
+                   [figwheel-sidecar "0.5.16"]]
 
-    :plugins      [[lein-figwheel "0.5.16"]
-                   [lein-doo "0.1.8"]]}
+    :plugins      [[lein-doo "0.1.10"]
+                   [lein-figwheel "0.5.16"]]}
    :prod { :dependencies [[day8.re-frame/tracing-stubs "0.5.1"]]}}
 
   :cljsbuild
