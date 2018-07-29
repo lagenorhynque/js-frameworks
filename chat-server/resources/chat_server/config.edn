@@ -42,8 +42,8 @@
   ;; Either :jetty, :immutant or :tomcat (see comments in project.clj)
   ;;  This can also be your own chain provider/server-fn -- http://pedestal.io/reference/architecture-overview#_chain_provider
   :type :jetty
-  ;; :host "localhost"
-  :port 8080
+  :host #duct/env "SERVER_HOST"
+  :port #duct/env ["SERVER_PORT" Int :or 8080]
   ;; Options to pass to the container (Jetty)
   :container-options {:h2c? true
                       :h2? false
@@ -51,5 +51,6 @@
                       ;; :key-password "password"
                       ;; :ssl-port 8443
                       :ssl? false}}
- :chat-server.server/server {:service #ig/ref :chat-server.server/service
-                             :dev? false}}
+ [:duct/server :chat-server.server/server]
+ {:service #ig/ref :chat-server.server/service
+  :dev? false}}
