@@ -17,8 +17,5 @@
     (cond-> (bidi/match-route* route path options)
       (seq query-params) (assoc :query-params query-params))))
 
-(defn navigate
-  ([handler]
-   (accountant/navigate! (bidi/path-for routes handler)))
-  ([handler route-params]
-   (accountant/navigate! (apply bidi/path-for routes handler (flatten (seq route-params))))))
+(defn navigate! [handler route-params]
+  (accountant/navigate! (apply bidi/path-for routes handler (flatten (seq route-params)))))

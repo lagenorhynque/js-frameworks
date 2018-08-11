@@ -5,3 +5,8 @@
   ::current-route
   (fn [db _]
     (:route db)))
+
+(re-frame/reg-sub
+  ::channels
+  (fn [db _]
+    (:channels db)))
