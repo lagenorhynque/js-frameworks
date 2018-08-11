@@ -1,5 +1,64 @@
 (ns re-frame-sample-app.views.channel
-  (:require [re-frame-sample-app.views.core :refer [view]]))
+  (:require [cljs-react-material-ui.reagent :as ui]
+            [re-frame-sample-app.events :as events]
+            [re-frame-sample-app.subs :as subs]
+            [re-frame-sample-app.views.core :refer [view]]
+            [re-frame.core :as re-frame]
+            [reagent.core :as reagent]
+            [stylefy.core :refer [use-style]]))
+
+(defn message-feed [{:keys [channel-id]}]
+  (re-frame/dispatch [::events/fetch-channel-detail channel-id])
+  (re-frame/dispatch [::events/fetch-channel-messages channel-id])
+  (let [detail @(re-frame/subscribe [::subs/channel-detail])
+        messages @(re-frame/subscribe [::subs/channel-messages])]
+    [ui/list
+     [ui/subheader (:name detail)]
+     (map (fn [message]
+            [ui/list-item
+             {:key (:id message)
+              :left-avatar (reagent/as-element [ui/avatar])
+              :primary-text (:user_name message)
+              :secondary-text (:body message)}])
+          (reverse messages))]))
+
+(def message-form-style
+  {:padding "30px"
+   :display "flex"
+   :flex-direction "column"
+   :align-items "center"})
+
+(defn message-form [{:keys [channel-id]}]
+  (let [message (reagent/atom {:body ""})]
+    (fn []
+      (letfn [(handle-text-area-change [e]
+                (.preventDefault e)
+                (swap! message assoc :body (-> e .-currentTarget .-value)))
+              (handle-form-submit [e]
+                (.preventDefault e)
+                (re-frame/dispatch [::events/post-message
+                                    channel-id
+                                    (assoc @message
+                                           :user_id 1)
+                                    #(do (reset! message {:body ""})
+                                         (re-frame/dispatch [::events/fetch-channel-messages channel-id]))
+                                    #(swap! message assoc :errors %)]))]
+        [ui/paper (use-style message-form-style)
+         [ui/text-field
+          {:multi-line true
+           :full-width true
+           :hint-text "Write your message"
+           :value (:body @message)
+           :on-change #(handle-text-area-change %)}]
+         [ui/raised-button
+          {:label "Send"
+           :primary true
+           :on-click #(handle-form-submit %)}]]))))
 
 (defmethod view ::view [{:keys [route-params]}]
-  [:div "Channl ID: " (:channel-id route-params)])
+  (let [channel-id (:channel-id route-params)]
+    [:div
+     [message-feed
+      {:channel-id channel-id}]
+     [message-form
+      {:channel-id channel-id}]]))
