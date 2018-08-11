@@ -2,14 +2,12 @@
   (:require [cljs-react-material-ui.reagent :as ui]
             [re-frame-sample-app.events :as events]
             [re-frame-sample-app.subs :as subs]
-            [re-frame-sample-app.views.core :refer [view]]
+            [re-frame-sample-app.views.core :refer [init view]]
             [re-frame.core :as re-frame]
             [reagent.core :as reagent]
             [stylefy.core :refer [use-style]]))
 
 (defn message-feed [{:keys [channel-id]}]
-  (re-frame/dispatch [::events/fetch-channel-detail channel-id])
-  (re-frame/dispatch [::events/fetch-channel-messages channel-id])
   (let [detail @(re-frame/subscribe [::subs/channel-detail])
         messages @(re-frame/subscribe [::subs/channel-messages])]
     [ui/list
@@ -49,11 +47,16 @@
            :full-width true
            :hint-text "Write your message"
            :value (:body @message)
-           :on-change #(handle-text-area-change %)}]
+           :on-change handle-text-area-change}]
          [ui/raised-button
           {:label "Send"
            :primary true
-           :on-click #(handle-form-submit %)}]]))))
+           :on-click handle-form-submit}]]))))
+
+(defmethod init ::view [{:keys [route-params]}]
+  (let [channel-id (:channel-id route-params)]
+    (re-frame/dispatch [::events/fetch-channel-detail channel-id])
+    (re-frame/dispatch [::events/fetch-channel-messages channel-id])))
 
 (defmethod view ::view [{:keys [route-params]}]
   (let [channel-id (:channel-id route-params)]

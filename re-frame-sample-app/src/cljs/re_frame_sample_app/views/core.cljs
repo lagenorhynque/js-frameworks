@@ -12,6 +12,11 @@
 (defmethod view :default [_]
   [:h1 "404 Not Found"])
 
+(defmulti init :handler)
+
+(defmethod init :default [_]
+  nil)
+
 (def main-style
   {:margin "1rem 0 1rem 16rem"})
 

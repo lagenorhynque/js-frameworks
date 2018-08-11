@@ -1,21 +1,22 @@
 (ns re-frame-sample-app.events
   (:require [ajax.core :as ajax]
-            [day8.re-frame.tracing :refer-macros [fn-traced defn-traced]]
             [re-frame-sample-app.db :as db]
             [re-frame-sample-app.fx :as fx]
             [re-frame.core :as re-frame]))
 
 (def base-url "http://localhost:8080/api")
 
-(re-frame/reg-event-db
+(re-frame/reg-event-fx
   ::initialize-db
-  (fn-traced [_ _]
-    db/default-db))
+  (fn [{:keys [db]} _]
+    {:db db/default-db
+     :dispatch [::fetch-channels]}))
 
-(re-frame/reg-event-db
+(re-frame/reg-event-fx
   ::set-current-route
-  (fn [db [_ route]]
-    (assoc db :route route)))
+  (fn [{:keys [db]} [_ route]]
+    {:db (assoc db :route route)
+     ::fx/init-view route}))
 
 (re-frame/reg-event-fx
   ::navigate

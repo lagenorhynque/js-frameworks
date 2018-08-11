@@ -7,7 +7,6 @@
             [reagent.core :as reagent]))
 
 (defn channel-list []
-  (re-frame/dispatch [::events/fetch-channels])
   [ui/drawer {:open true}
    [ui/list
     [ui/list-item
