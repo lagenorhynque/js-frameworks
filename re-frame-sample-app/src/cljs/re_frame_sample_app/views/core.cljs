@@ -1,6 +1,5 @@
 (ns re-frame-sample-app.views.core
-  (:require [cljs-react-material-ui.core :refer [get-mui-theme color]]
-            [cljs-react-material-ui.icons :as ic]
+  (:require [cljs-react-material-ui.core :refer [get-mui-theme]]
             [cljs-react-material-ui.reagent :as ui]
             [re-frame-sample-app.subs.core :as subs]
             [re-frame-sample-app.views.channel-list :refer [channel-list]]

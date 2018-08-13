@@ -12,8 +12,3 @@
   :navigate
   (fn [{:keys [handler route-params]}]
     (routes/navigate! handler route-params)))
-
-(re-frame/reg-fx
-  :api-callback
-  (fn [{:keys [fn args]}]
-    (apply fn args)))

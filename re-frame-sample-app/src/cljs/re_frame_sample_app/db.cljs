@@ -2,4 +2,5 @@
 
 (def default-db
   {:route {:handler :re-frame-sample-app.views.home/view}
-   :channels []})
+   :channels []
+   :channel {:message-form {:body ""}}})

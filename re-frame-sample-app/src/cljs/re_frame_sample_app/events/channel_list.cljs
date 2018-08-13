@@ -6,9 +6,9 @@
   ::fetch-channels
   (fn [_ _]
     {:http-xhrio (assoc api/get-channels
-                        :on-success [::set-channels])}))
+                        :on-success [::on-success-fetch-channels])}))
 
 (re-frame/reg-event-db
-  ::set-channels
+  ::on-success-fetch-channels
   (fn [db [_ response]]
     (assoc db :channels (:data response))))

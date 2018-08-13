@@ -10,3 +10,8 @@
   ::messages
   (fn [db _]
     (get-in db [:channel :messages])))
+
+(re-frame/reg-sub
+  ::message-form
+  (fn [db _]
+    (get-in db [:channel :message-form])))

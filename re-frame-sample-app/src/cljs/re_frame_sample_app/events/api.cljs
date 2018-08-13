@@ -1,6 +1,5 @@
 (ns re-frame-sample-app.events.api
-  (:require [ajax.core :as ajax]
-            [re-frame.core :as re-frame]))
+  (:require [ajax.core :as ajax]))
 
 (def base-url "http://localhost:8080/api")
 
@@ -29,14 +28,3 @@
   (assoc api-post
          :uri (str base-url "/channels/" channel-id "/messages")
          :params message))
-
-(re-frame/reg-event-fx
-  ::on-success
-  (fn [_ [_ callback]]
-    {:api-callback {:fn callback}}))
-
-(re-frame/reg-event-fx
-  ::on-failure
-  (fn [_ [_ callback {:keys [response]}]]
-    {:api-callback {:fn callback
-                    :args [(:errors response)]}}))

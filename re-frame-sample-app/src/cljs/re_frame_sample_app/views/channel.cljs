@@ -27,31 +27,25 @@
    :align-items "center"})
 
 (defn message-form [{:keys [channel-id]}]
-  (let [message (reagent/atom {:body ""})]
-    (fn []
-      (letfn [(handle-text-area-change [e]
-                (.preventDefault e)
-                (swap! message assoc :body (-> e .-currentTarget .-value)))
-              (handle-form-submit [e]
-                (.preventDefault e)
-                (re-frame/dispatch [::events.channel/post-message
-                                    channel-id
-                                    (assoc @message
-                                           :user_id 1)
-                                    #(do (reset! message {:body ""})
-                                         (re-frame/dispatch [::events.channel/fetch-messages channel-id]))
-                                    #(swap! message assoc :errors %)]))]
-        [ui/paper (use-style message-form-style)
-         [ui/text-field
-          {:multi-line true
-           :full-width true
-           :hint-text "Write your message"
-           :value (:body @message)
-           :on-change handle-text-area-change}]
-         [ui/raised-button
-          {:label "Send"
-           :primary true
-           :on-click handle-form-submit}]]))))
+  (let [message @(re-frame/subscribe [::subs.channel/message-form])]
+    (letfn [(handle-text-area-change [e]
+              (.preventDefault e)
+              (re-frame/dispatch [::events.channel/update-message-form
+                                  :body (-> e .-currentTarget .-value)]))
+            (handle-form-submit [e]
+              (.preventDefault e)
+              (re-frame/dispatch [::events.channel/post-message channel-id message]))]
+      [ui/paper (use-style message-form-style)
+       [ui/text-field
+        {:multi-line true
+         :full-width true
+         :hint-text "Write your message"
+         :value (:body message)
+         :on-change handle-text-area-change}]
+       [ui/raised-button
+        {:label "Send"
+         :primary true
+         :on-click handle-form-submit}]])))
 
 (defmethod init ::view [{:keys [route-params]}]
   (let [channel-id (:channel-id route-params)]
