@@ -1,8 +1,8 @@
 (ns re-frame-sample-app.views.channel-list
   (:require [cljs-react-material-ui.icons :as ic]
             [cljs-react-material-ui.reagent :as ui]
-            [re-frame-sample-app.events :as events]
-            [re-frame-sample-app.subs :as subs]
+            [re-frame-sample-app.events.core :as events]
+            [re-frame-sample-app.subs.channel-list :as subs.channel-list]
             [re-frame.core :as re-frame]
             [reagent.core :as reagent]))
 
@@ -27,4 +27,4 @@
                               :on-click #(re-frame/dispatch [::events/navigate
                                                              :re-frame-sample-app.views.channel/view
                                                              {:channel-id (:id channel)}])}])
-                          @(re-frame/subscribe [::subs/channels])))}]]])
+                          @(re-frame/subscribe [::subs.channel-list/channels])))}]]])

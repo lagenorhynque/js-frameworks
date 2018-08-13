@@ -2,7 +2,7 @@
   (:require [cljs-react-material-ui.core :refer [get-mui-theme color]]
             [cljs-react-material-ui.icons :as ic]
             [cljs-react-material-ui.reagent :as ui]
-            [re-frame-sample-app.subs :as subs]
+            [re-frame-sample-app.subs.core :as subs]
             [re-frame-sample-app.views.channel-list :refer [channel-list]]
             [re-frame.core :as re-frame]
             [stylefy.core :refer [use-style]]))

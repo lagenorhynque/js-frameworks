@@ -1,15 +1,15 @@
 (ns re-frame-sample-app.views.channel
   (:require [cljs-react-material-ui.reagent :as ui]
-            [re-frame-sample-app.events :as events]
-            [re-frame-sample-app.subs :as subs]
+            [re-frame-sample-app.events.channel :as events.channel]
+            [re-frame-sample-app.subs.channel :as subs.channel]
             [re-frame-sample-app.views.core :refer [init view]]
             [re-frame.core :as re-frame]
             [reagent.core :as reagent]
             [stylefy.core :refer [use-style]]))
 
 (defn message-feed [{:keys [channel-id]}]
-  (let [detail @(re-frame/subscribe [::subs/channel-detail])
-        messages @(re-frame/subscribe [::subs/channel-messages])]
+  (let [detail @(re-frame/subscribe [::subs.channel/detail])
+        messages @(re-frame/subscribe [::subs.channel/messages])]
     [ui/list
      [ui/subheader (:name detail)]
      (map (fn [message]
@@ -34,12 +34,12 @@
                 (swap! message assoc :body (-> e .-currentTarget .-value)))
               (handle-form-submit [e]
                 (.preventDefault e)
-                (re-frame/dispatch [::events/post-message
+                (re-frame/dispatch [::events.channel/post-message
                                     channel-id
                                     (assoc @message
                                            :user_id 1)
                                     #(do (reset! message {:body ""})
-                                         (re-frame/dispatch [::events/fetch-channel-messages channel-id]))
+                                         (re-frame/dispatch [::events.channel/fetch-messages channel-id]))
                                     #(swap! message assoc :errors %)]))]
         [ui/paper (use-style message-form-style)
          [ui/text-field
@@ -55,8 +55,8 @@
 
 (defmethod init ::view [{:keys [route-params]}]
   (let [channel-id (:channel-id route-params)]
-    (re-frame/dispatch [::events/fetch-channel-detail channel-id])
-    (re-frame/dispatch [::events/fetch-channel-messages channel-id])))
+    (re-frame/dispatch [::events.channel/fetch-detail channel-id])
+    (re-frame/dispatch [::events.channel/fetch-messages channel-id])))
 
 (defmethod view ::view [{:keys [route-params]}]
   (let [channel-id (:channel-id route-params)]
