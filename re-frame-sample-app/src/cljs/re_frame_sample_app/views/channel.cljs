@@ -34,13 +34,14 @@
                                   :body (-> e .-currentTarget .-value)]))
             (handle-form-submit [e]
               (.preventDefault e)
-              (re-frame/dispatch [::events.channel/post-message channel-id message]))]
+              (re-frame/dispatch [::events.channel/post-message channel-id message])
+              (set! (-> js/document (.getElementById (name :message-body)) .-value) ""))]
       [ui/paper (use-style message-form-style)
        [ui/text-field
-        {:multi-line true
+        {:id :message-body
+         :multi-line true
          :full-width true
          :hint-text "Write your message"
-         :value (:body message)
          :on-change handle-text-area-change}]
        [ui/raised-button
         {:label "Send"
