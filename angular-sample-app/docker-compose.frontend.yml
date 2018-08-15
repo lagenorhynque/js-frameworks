@@ -1,0 +1,10 @@
+version: "3"
+services:
+  angular-frontend:
+    build: .
+    ports:
+      - 4200:80
+    environment:
+      - APP_HOST=localhost
+      - APP_PORT=8080
+    command: /bin/sh -c "envsubst '$$APP_HOST$$APP_PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
