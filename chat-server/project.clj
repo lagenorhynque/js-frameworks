@@ -24,7 +24,6 @@
                  [org.slf4j/jcl-over-slf4j "1.7.25"]
                  [org.slf4j/jul-to-slf4j "1.7.25"]
                  [org.slf4j/log4j-over-slf4j "1.7.25"]]
-  :jvm-opts ["--add-modules" "java.xml.bind"]
   :plugins [[duct/lein-duct "0.10.6"]]
   :main ^:skip-aot chat-server.main
   :source-paths   ["src/clj"]
@@ -37,7 +36,8 @@
           :repl-options {:init-ns user
                          ;; :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]
                          }}
-   :uberjar {:aot :all}
+   :uberjar {:aot :all
+             :uberjar-name "chat-server.jar"}
    :profiles/dev {}
    :project/dev  {:source-paths   ["dev/src"]
                   :resource-paths ["dev/resources"]
