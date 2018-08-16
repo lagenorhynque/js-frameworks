@@ -8,10 +8,8 @@
                  [com.stuartsierra/dependency "0.2.0"]
                  [duct/core "0.6.2"]
                  [duct/database.sql.hikaricp "0.3.3"]
-                 ;; [duct/module.cljs "0.3.2"]
                  [duct/module.logging "0.3.1"]
                  [duct/module.sql "0.4.2"]
-                 ;; [duct/module.web "0.6.4"]
                  [funcool/struct "1.3.0"]
                  [honeysql "0.9.3"]
                  [integrant "0.7.0-alpha2"]
@@ -20,7 +18,6 @@
                  [metosin/ring-http-response "0.9.0"]
                  [mysql/mysql-connector-java "8.0.12"]
                  [org.clojure/clojure "1.9.0"]
-                 ;; [org.clojure/clojurescript "1.10.339"]
                  [org.slf4j/jcl-over-slf4j "1.7.25"]
                  [org.slf4j/jul-to-slf4j "1.7.25"]
                  [org.slf4j/log4j-over-slf4j "1.7.25"]]
@@ -33,9 +30,7 @@
   :profiles
   {:dev  [:project/dev :profiles/dev]
    :repl {:prep-tasks   ^:replace ["javac" "compile"]
-          :repl-options {:init-ns user
-                         ;; :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]
-                         }}
+          :repl-options {:init-ns user}}
    :uberjar {:aot :all
              :uberjar-name "chat-server.jar"}
    :profiles/dev {}

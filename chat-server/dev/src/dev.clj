@@ -9,7 +9,6 @@
             [clojure.spec.test.alpha :as stest]
             [duct.core :as duct]
             [duct.core.repl :as duct-repl]
-            ;; [duct.repl.figwheel :refer [cljs-repl]]
             [eftest.runner :as eftest]
             [integrant.core :as ig]
             [integrant.repl :refer [clear halt go init prep]]

@@ -4,7 +4,6 @@
  :duct.module/logging {}
  :duct.module/sql {}
  :duct.migrator/ragtime {}
- ;; :duct.module/cljs {:main chat-server.client}
 
  :chat-server.routes/routes {:db #ig/ref :duct.database/sql}
  ;; Consumed by chat-server.server/create-server
