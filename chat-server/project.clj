@@ -46,5 +46,9 @@
                                    [integrant/repl "0.3.1"]
                                    [io.pedestal/pedestal.service-tools "0.5.4"]
                                    [kerodon "0.9.0"]]
-                  :aliases {"rebel" ^{:doc "Run REPL with rebel-readline."}
+                  :aliases {"db-migrate" ^{:doc "Migrate DB to the latest migration."}
+                            ["run" "-m" "chat-server.main/db-migrate"]
+                            "db-rollback" ^{:doc "Rollback DB one migration."}
+                            ["run" "-m" "chat-server.main/db-rollback"]
+                            "rebel" ^{:doc "Run REPL with rebel-readline."}
                             ["trampoline" "run" "-m" "rebel-readline.main"]}}})
