@@ -41,9 +41,21 @@
                                    [integrant/repl "0.3.1"]
                                    [io.pedestal/pedestal.service-tools "0.5.4"]
                                    [kerodon "0.9.0"]]
+                  :plugins [[jonase/eastwood "0.2.9"]
+                            [lein-cljfmt "0.6.0"]
+                            [lein-cloverage "1.0.11"]
+                            [lein-codox "0.10.4"]
+                            [lein-kibit "0.1.6"]]
                   :aliases {"db-migrate" ^{:doc "Migrate DB to the latest migration."}
                             ["run" "-m" "chat-server.main/db-migrate"]
                             "db-rollback" ^{:doc "Rollback DB one migration."}
                             ["run" "-m" "chat-server.main/db-rollback"]
                             "rebel" ^{:doc "Run REPL with rebel-readline."}
-                            ["trampoline" "run" "-m" "rebel-readline.main"]}}})
+                            ["trampoline" "run" "-m" "rebel-readline.main"]
+                            "lint" ^{:doc "Execute cljfmt check, eastwood and kibit."}
+                            ["do"
+                             ["cljfmt" "check"]
+                             ["eastwood" "{:config-files [\"dev/resources/eastwood_config.clj\"]}"]
+                             ["kibit"]]}
+                  :cljfmt {:indents {fdef [[:inner 0]]
+                                     for-all [[:inner 0]]}}}})
