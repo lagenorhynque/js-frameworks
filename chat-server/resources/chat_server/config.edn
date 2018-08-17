@@ -4,8 +4,11 @@
  :duct.module/logging {}
  :duct.module/sql {}
  :duct.migrator/ragtime {}
+ :duct.database.redis/carmine {:spec {:host #duct/env "REDIS_HOST"
+                                      :port #duct/env ["REDIS_PORT" Int :or 6379]}}
 
- :chat-server.routes/routes {:db #ig/ref :duct.database/sql}
+ :chat-server.routes/routes {:db #ig/ref :duct.database/sql
+                             :redis #ig/ref :duct.database.redis/carmine}
  ;; Consumed by chat-server.server/create-server
  ;; See http/default-interceptors for additional options you can configure
  :chat-server.server/service

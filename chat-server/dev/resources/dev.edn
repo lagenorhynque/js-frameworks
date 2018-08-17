@@ -3,6 +3,7 @@
 
  :duct.module/sql
  {:database-url "jdbc:mysql://localhost:3307/chat_server?user=chat_server_dev&password=password123&useSSL=false"}
+ :duct.database.redis/carmine {:spec {:host "127.0.0.1"}}
 
  :chat-server.server/service
  #:io.pedestal.http{;; do not block thread that starts web server

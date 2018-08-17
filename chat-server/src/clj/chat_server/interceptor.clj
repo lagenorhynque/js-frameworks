@@ -1,7 +1,12 @@
 (ns chat-server.interceptor
   (:require [chat-server.util.core :as util]
+            [io.pedestal.http.ring-middlewares :as middlewares]
             [ring.util.http-response :as response]
-            [struct.core :as st]))
+            [struct.core :as st]
+            [taoensso.carmine.ring :refer [carmine-store]]))
+
+(defn store-session [{:keys [conn-opts]}]
+  (middlewares/session {:store (carmine-store conn-opts)}))
 
 (def attach-tx-data
   {:name ::attach-tx-data

@@ -13,6 +13,16 @@ services:
       MYSQL_PASSWORD: password123
       MYSQL_DATABASE: chat_server
 
+  redis:
+    image: redis:4.0
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
 volumes:
   db-data:
+    driver: local
+  redis-data:
     driver: local

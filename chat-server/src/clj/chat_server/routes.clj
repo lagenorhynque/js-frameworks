@@ -16,9 +16,10 @@
 ;;; routing
 
 (defmethod ig/init-key ::routes
-  [_ {:keys [db]}]
+  [_ {:keys [db redis]}]
   (let [common-interceptors [(body-params/body-params)
                              http/json-body
+                             (interceptor/store-session redis)
                              interceptor/attach-tx-data
                              (interceptor/validate validation-schemas)
                              (interceptor/attach-database db)]]
