@@ -3,11 +3,14 @@
 
  :duct.module/sql
  {:database-url "jdbc:mysql://localhost:3307/chat_server?user=chat_server_dev&password=password123&useSSL=false"}
- :duct.database.redis/carmine {:spec {:host "127.0.0.1"}}
+
+ :duct.database.redis/carmine
+ {:spec {:host "127.0.0.1"}}
 
  :chat-server.server/service
  #:io.pedestal.http{;; do not block thread that starts web server
                     :join? false
                     ;; Content Security Policy (CSP) is mostly turned off in dev mode
                     :secure-headers {:content-security-policy-settings {:object-src "'none'"}}}
+
  :chat-server.server/server {:dev? true}}
