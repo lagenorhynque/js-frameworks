@@ -21,9 +21,15 @@
                :user-id ::id)
   :ret (s/nilable ::user))
 
+(s/fdef find-user-by-uid
+  :args (s/cat :db ::db/db
+               :uid ::uid)
+  :ret (s/nilable ::user))
+
 (defprotocol Users
   (create-user [db user])
-  (find-user-by-id [db id]))
+  (find-user-by-id [db user-id])
+  (find-user-by-uid [db user-uid]))
 
 (extend-protocol Users
   duct.database.sql.Boundary
@@ -33,4 +39,9 @@
     (db/select-one db (sql/build
                        :select :*
                        :from :users
-                       :where [:= :id user-id]))))
+                       :where [:= :id user-id])))
+  (find-user-by-uid [db user-uid]
+    (db/select-one db (sql/build
+                       :select :*
+                       :from :users
+                       :where [:= :uid user-uid]))))

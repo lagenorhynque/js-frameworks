@@ -8,6 +8,14 @@
 (defn store-session [{:keys [conn-opts]}]
   (middlewares/session {:store (carmine-store conn-opts)}))
 
+(def authenticate
+  {:name ::authenticate
+   :enter
+   (fn [context]
+     (if (empty? (get-in context [:request :session :user]))
+       (assoc context :response (response/unauthorized {:errors {:user "is unauthorized"}}))
+       context))})
+
 (def attach-tx-data
   {:name ::attach-tx-data
    :enter
