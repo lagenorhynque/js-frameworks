@@ -14,4 +14,14 @@ trait ChannelsDao {
           .orderBy(c.name.asc, c.id.asc)
       }.map(Channel(c)).list.apply()
     }
+
+  def findById(id: Int): Option[Channel] =
+    DB readOnly { implicit session =>
+      withSQL {
+        select
+          .from(Channel as c)
+          .where
+          .eq(c.id, id)
+      }.map(Channel(c)).single.apply()
+    }
 }
