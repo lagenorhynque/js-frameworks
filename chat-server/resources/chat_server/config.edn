@@ -4,7 +4,8 @@
  :duct.module/logging {}
 
  :duct.module/sql
- {:driver-class-name "com.mysql.cj.jdbc.Driver"}
+ {:database-url #duct/env "DATABASE_URL"
+  :driver-class-name "com.mysql.cj.jdbc.Driver"}
 
  :duct.migrator/ragtime {}
 

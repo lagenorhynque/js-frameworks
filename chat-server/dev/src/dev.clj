@@ -1,26 +1,31 @@
 (ns dev
   (:refer-clojure :exclude [test])
   (:require [chat-server.boundary.db.core]
-            [clojure.repl :refer :all]
-            [fipp.edn :refer [pprint]]
-            [clojure.tools.namespace.repl :refer [refresh]]
             [clojure.java.io :as io]
+            [clojure.repl :refer :all]
             [clojure.spec.alpha :as s]
             [clojure.spec.test.alpha :as stest]
+            [clojure.tools.namespace.repl :refer [refresh]]
             [duct.core :as duct]
             [duct.core.repl :as duct-repl]
             [eftest.runner :as eftest]
+            [fipp.edn :refer [pprint]]
             [integrant.core :as ig]
             [integrant.repl :refer [clear halt go init prep]]
-            [integrant.repl.state :refer [config system]]))
+            [integrant.repl.state :refer [config system]]
+            [ragtime.jdbc]
+            [ragtime.repl]))
 
 (duct/load-hierarchy)
 
 (defn read-config []
   (duct/read-config (io/resource "dev.edn")))
 
-(defn test []
-  (eftest/run-tests (eftest/find-tests "test")))
+(defn test
+  ([]
+   (eftest/run-tests (eftest/find-tests "test")))
+  ([sym]
+   (eftest/run-tests (eftest/find-tests sym))))
 
 (clojure.tools.namespace.repl/set-refresh-dirs "dev/src" "src" "test")
 
@@ -32,3 +37,32 @@
 (defn reset []
   (integrant.repl/reset)
   (stest/instrument))
+
+;;; DB migration
+
+(def env-files
+  {"dev" "dev.edn"
+   "test" "test.edn"
+   "prod" "chat_server/config.edn"})
+
+(defn- validate-env [env]
+  (when-not (some #{env} (keys env-files))
+    (throw (IllegalArgumentException. (format "env `%s` is undefined" env)))))
+
+(defn- load-migration-config [env]
+  (when-let [f (get env-files env)]
+    (let [{{:keys [database-url]} :duct.module/sql
+           {:keys [migrations]} :duct.migrator/ragtime}
+          (-> (duct/read-config (io/resource f))
+              duct/prep
+              ig/prep)]
+      {:datastore (ragtime.jdbc/sql-database database-url)
+       :migrations migrations})))
+
+(defn db-migrate [env]
+  (validate-env env)
+  (ragtime.repl/migrate (load-migration-config env)))
+
+(defn db-rollback [env]
+  (validate-env env)
+  (ragtime.repl/rollback (load-migration-config env)))

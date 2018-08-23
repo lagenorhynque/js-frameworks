@@ -1,0 +1,12 @@
+{:duct.core/environment :development
+ :duct.core/include ["dev"]
+
+ :duct.module/sql
+ {:database-url "jdbc:mysql://localhost:3308/chat_server_test?user=chat_server_dev&password=password123&useSSL=false"}
+
+ :duct.database.redis/carmine
+ {:spec {:port 6380}}
+
+ :chat-server.server/service
+ #:io.pedestal.http
+ {:port 8081}}

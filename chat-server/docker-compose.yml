@@ -6,12 +6,25 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - db-data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: chat_server_dev
       MYSQL_PASSWORD: password123
       MYSQL_DATABASE: chat_server
+
+  mysql-test:
+    image: mysql:5.7
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-test-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: chat_server_dev
+      MYSQL_PASSWORD: password123
+      MYSQL_DATABASE: chat_server_test
 
   redis:
     image: redis:4.0
@@ -21,8 +34,20 @@ services:
     volumes:
       - redis-data:/data
 
+  redis-test:
+    image: redis:4.0
+    command: redis-server --appendonly yes
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis-test-data:/data
+
 volumes:
-  db-data:
+  mysql-data:
+    driver: local
+  mysql-test-data:
     driver: local
   redis-data:
+    driver: local
+  redis-test-data:
     driver: local

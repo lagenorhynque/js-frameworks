@@ -29,35 +29,44 @@
   :resource-paths ["resources" "target/resources"]
   :prep-tasks     ["javac" "compile" ["run" ":duct/compiler"]]
   :profiles
-  {:dev  [:project/dev :profiles/dev]
-   :repl {:prep-tasks   ^:replace ["javac" "compile"]
+  {:repl {:prep-tasks   ^:replace ["javac" "compile"]
           :repl-options {:init-ns user}}
-   :uberjar {:aot :all
-             :uberjar-name "chat-server.jar"}
+   :dev  [:shared :project/dev :profiles/dev]
+   :test [:shared :project/dev :project/test :profiles/test]
+   :uberjar [:shared :project/uberjar]
+
+   :shared {}
+   :project/dev {:source-paths   ["dev/src"]
+                 :resource-paths ["dev/resources"]
+                 :dependencies   [[clj-http "3.9.1"]
+                                  [com.bhauman/rebel-readline "0.1.4"]
+                                  [com.gearswithingears/shrubbery "0.4.1"]
+                                  [eftest "0.5.2"]
+                                  [integrant/repl "0.3.1"]
+                                  [io.pedestal/pedestal.service-tools "0.5.4"]
+                                  [kerodon "0.9.0"]]
+                 :plugins [[jonase/eastwood "0.2.9"]
+                           [lein-cljfmt "0.6.0"]
+                           [lein-cloverage "1.0.11"]
+                           [lein-codox "0.10.4"]
+                           [lein-eftest "0.5.2"]
+                           [lein-kibit "0.1.6"]]
+                 :aliases {"db-migrate" ^{:doc "Migrate DB to the latest migration."}
+                           ["run" "-m" "dev/db-migrate"]
+                           "db-rollback" ^{:doc "Rollback DB one migration."}
+                           ["run" "-m" "dev/db-rollback"]
+                           "rebel" ^{:doc "Run REPL with rebel-readline."}
+                           ["trampoline" "run" "-m" "rebel-readline.main"]
+                           "lint" ^{:doc "Execute cljfmt check, eastwood and kibit."}
+                           ["do"
+                            ["cljfmt" "check"]
+                            ["eastwood" "{:config-files [\"dev/resources/eastwood_config.clj\"]
+                                          :test-paths []}"]
+                            ["kibit"]]}
+                 :cljfmt {:indents {fdef [[:inner 0]]
+                                    for-all [[:inner 0]]}}}
+   :project/test {}
+   :project/uberjar {:aot :all
+                     :uberjar-name "chat-server.jar"}
    :profiles/dev {}
-   :project/dev  {:source-paths   ["dev/src"]
-                  :resource-paths ["dev/resources"]
-                  :dependencies   [[com.bhauman/rebel-readline "0.1.4"]
-                                   [com.gearswithingears/shrubbery "0.4.1"]
-                                   [eftest "0.5.2"]
-                                   [integrant/repl "0.3.1"]
-                                   [io.pedestal/pedestal.service-tools "0.5.4"]
-                                   [kerodon "0.9.0"]]
-                  :plugins [[jonase/eastwood "0.2.9"]
-                            [lein-cljfmt "0.6.0"]
-                            [lein-cloverage "1.0.11"]
-                            [lein-codox "0.10.4"]
-                            [lein-kibit "0.1.6"]]
-                  :aliases {"db-migrate" ^{:doc "Migrate DB to the latest migration."}
-                            ["run" "-m" "chat-server.main/db-migrate"]
-                            "db-rollback" ^{:doc "Rollback DB one migration."}
-                            ["run" "-m" "chat-server.main/db-rollback"]
-                            "rebel" ^{:doc "Run REPL with rebel-readline."}
-                            ["trampoline" "run" "-m" "rebel-readline.main"]
-                            "lint" ^{:doc "Execute cljfmt check, eastwood and kibit."}
-                            ["do"
-                             ["cljfmt" "check"]
-                             ["eastwood" "{:config-files [\"dev/resources/eastwood_config.clj\"]}"]
-                             ["kibit"]]}
-                  :cljfmt {:indents {fdef [[:inner 0]]
-                                     for-all [[:inner 0]]}}}})
+   :profiles/test {}})
