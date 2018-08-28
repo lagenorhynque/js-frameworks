@@ -38,18 +38,17 @@
    :shared {}
    :project/dev {:source-paths   ["dev/src"]
                  :resource-paths ["dev/resources"]
-                 :dependencies   [[clj-http "3.9.1"]
+                 :dependencies   [[clj-http "3.9.1" :exclusions [potemkin]]
                                   [com.bhauman/rebel-readline "0.1.4"]
                                   [com.gearswithingears/shrubbery "0.4.1"]
                                   [eftest "0.5.2"]
                                   [integrant/repl "0.3.1"]
                                   [io.pedestal/pedestal.service-tools "0.5.4"]
-                                  [kerodon "0.9.0"]]
+                                  [pjstadig/humane-test-output "0.8.3"]]
                  :plugins [[jonase/eastwood "0.2.9"]
                            [lein-cljfmt "0.6.0"]
-                           [lein-cloverage "1.0.11"]
+                           [lein-cloverage "1.0.13"]
                            [lein-codox "0.10.4"]
-                           [lein-eftest "0.5.2"]
                            [lein-kibit "0.1.6"]]
                  :aliases {"db-migrate" ^{:doc "Migrate DB to the latest migration."}
                            ["run" "-m" "dev/db-migrate"]
@@ -57,12 +56,16 @@
                            ["run" "-m" "dev/db-rollback"]
                            "rebel" ^{:doc "Run REPL with rebel-readline."}
                            ["trampoline" "run" "-m" "rebel-readline.main"]
+                           "test-coverage" ^{:doc "Execute cloverage."}
+                           ["cloverage" "--ns-exclude-regex" "^(:?dev|user)$" "--codecov"]
                            "lint" ^{:doc "Execute cljfmt check, eastwood and kibit."}
                            ["do"
                             ["cljfmt" "check"]
                             ["eastwood" "{:config-files [\"dev/resources/eastwood_config.clj\"]
                                           :test-paths []}"]
                             ["kibit"]]}
+                 :injections [(require 'pjstadig.humane-test-output)
+                              (pjstadig.humane-test-output/activate!)]
                  :cljfmt {:indents {fdef [[:inner 0]]
                                     for-all [[:inner 0]]}}}
    :project/test {}

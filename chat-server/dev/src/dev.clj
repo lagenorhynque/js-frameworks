@@ -23,9 +23,11 @@
 
 (defn test
   ([]
-   (eftest/run-tests (eftest/find-tests "test")))
+   (eftest/run-tests (eftest/find-tests "test")
+                     {:multithread? false}))
   ([sym]
-   (eftest/run-tests (eftest/find-tests sym))))
+   (eftest/run-tests (eftest/find-tests sym)
+                     {:multithread? false})))
 
 (clojure.tools.namespace.repl/set-refresh-dirs "dev/src" "src" "test")
 
