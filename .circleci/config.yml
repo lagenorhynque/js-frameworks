@@ -1,0 +1,33 @@
+version: 2
+jobs:
+  build:
+    # resource_class: large
+    working_directory: /root/js-frameworks
+    docker:
+    - image: lagenorhynque/js-frameworks-ci:0.1.0
+      environment:
+        TZ: Asia/Tokyo
+        TEST_DATABASE_URL: "jdbc:mysql://localhost:3306/chat_server_test?user=chat_server_dev&password=password123&useSSL=false"
+        TEST_REDIS_PORT: 6379
+    - image: mysql:5.7
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_USER: chat_server_dev
+        MYSQL_PASSWORD: password123
+        MYSQL_DATABASE: chat_server_test
+    - image: redis:4.0
+      command: redis-server --appendonly yes
+    steps:
+    - checkout
+    - restore_cache:
+        key: chat-server-{{ checksum "chat-server/project.clj" }}
+    - run: cd chat-server; lein deps
+    - run: cd chat-server; lein db-migrate test
+    - run: cd chat-server; lein test-coverage
+    - run: cd chat-server; lein lint
+    # - run: bash <(curl -s https://codecov.io/bash) -f '!*.txt'
+    - save_cache:
+        key: chat-server-{{ checksum "chat-server/project.clj" }}
+        paths:
+        - /root/.lein
+        - /root/.m2
