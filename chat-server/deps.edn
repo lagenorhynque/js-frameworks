@@ -1,2 +1,3 @@
-{:deps {io.forward/yaml {:mvn/version "1.0.9"}}
+{:deps {cheshire {:mvn/version "5.8.0"}
+        io.forward/yaml {:mvn/version "1.0.9"}}
  :paths ["scripts"]}
