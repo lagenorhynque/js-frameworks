@@ -33,10 +33,10 @@
     #(route/expand-routes
       #{["/api/authentication" :get (conj common-interceptors
                                           `authentication/fetch-user)]
-        ["/api/authentication/login" :post (conj auth-interceptors
-                                                 `authentication/login)]
-        ["/api/authentication/logout" :delete (conj auth-interceptors
-                                                    `authentication/logout)]
+        ["/api/authentication" :post (conj auth-interceptors
+                                           `authentication/login)]
+        ["/api/authentication" :delete (conj auth-interceptors
+                                             `authentication/logout)]
         ["/api/channels" :get (conj common-interceptors
                                     `channels/list-channels)]
         ["/api/channels" :post (conj common-interceptors

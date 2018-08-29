@@ -27,9 +27,8 @@
                                                :name "lagénorhynque"
                                                :avatar ""}}}}
                             401
-                            {:$ref "#/responses/unauthorized"}}}}
-         "/authentication/login"
-         {:post {:tags [:authentication]
+                            {:$ref "#/responses/unauthorized"}}}
+          :post {:tags [:authentication]
                  :summary "ログイン"
                  :description ""
                  :parameters [{:in :body
@@ -53,9 +52,8 @@
                                                 :name "lagénorhynque"
                                                 :avatar ""}}}}
                              400
-                             {:$ref "#/responses/not_found"}}}}
-         "/authentication/logout"
-         {:delete {:tags [:authentication]
+                             {:$ref "#/responses/not_found"}}}
+          :delete {:tags [:authentication]
                    :summary "ログアウト"
                    :description ""
                    :parameters []
