@@ -7,9 +7,9 @@
             [clj-http.cookies]
             [clj-http.core]
             [clojure.java.io :as io]
-            [clojure.spec.test.alpha :as stest]
             [duct.core :as duct]
-            [integrant.core :as ig]))
+            [integrant.core :as ig]
+            [orchestra.spec.test :as stest]))
 
 (duct/load-hierarchy)
 

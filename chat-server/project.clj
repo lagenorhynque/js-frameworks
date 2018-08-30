@@ -44,6 +44,7 @@
                                   [eftest "0.5.2"]
                                   [integrant/repl "0.3.1"]
                                   [io.pedestal/pedestal.service-tools "0.5.4"]
+                                  [orchestra "2018.08.19-1"]
                                   [pjstadig/humane-test-output "0.8.3"]]
                  :plugins [[jonase/eastwood "0.2.9"]
                            [lein-cljfmt "0.6.0"]

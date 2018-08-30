@@ -4,7 +4,6 @@
             [clojure.java.io :as io]
             [clojure.repl :refer :all]
             [clojure.spec.alpha :as s]
-            [clojure.spec.test.alpha :as stest]
             [clojure.tools.namespace.repl :refer [refresh]]
             [duct.core :as duct]
             [duct.core.repl :as duct-repl]
@@ -13,6 +12,7 @@
             [integrant.core :as ig]
             [integrant.repl :refer [clear halt go init prep]]
             [integrant.repl.state :refer [config system]]
+            [orchestra.spec.test :as stest]
             [ragtime.jdbc]
             [ragtime.repl]))
 
@@ -38,7 +38,8 @@
 
 (defn reset []
   (integrant.repl/reset)
-  (stest/instrument))
+  (with-out-str (stest/instrument))
+  nil)
 
 ;;; DB migration
 
