@@ -7,7 +7,7 @@
             [honeysql.core :as sql])
   (:import (java.time ZonedDateTime)))
 
-(s/def ::id integer?)
+(s/def ::id (s/and integer? pos?))
 (s/def ::body string?)
 (s/def ::user-id ::users/id)
 (s/def ::channel-id ::channels/id)
@@ -27,7 +27,7 @@
 (s/fdef create-messages
   :args (s/cat :db ::db/db
                :messages (s/coll-of ::message))
-  :ret (s/coll-of ::id))
+  :ret ::db/row-count)
 
 (s/fdef find-messages-by-channel
   :args (s/cat :db ::db/db

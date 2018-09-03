@@ -32,8 +32,8 @@
 (s/def ::sql-map (s/map-of keyword? any?))
 (s/def ::table keyword?)
 (s/def ::row-map (s/map-of keyword? any?))
-(s/def ::row-count nat-int?)
-(s/def ::row-id pos-int?)
+(s/def ::row-count (s/and integer? (complement neg?)))
+(s/def ::row-id (s/and integer? pos?))
 
 (s/fdef with-transaction
   :args (s/cat :binding (s/tuple any?)

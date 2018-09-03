@@ -4,7 +4,7 @@
             [duct.database.sql]
             [honeysql.core :as sql]))
 
-(s/def ::id integer?)
+(s/def ::id (s/and integer? pos?))
 (s/def ::uid string?)
 (s/def ::name string?)
 (s/def ::avatar string?)
