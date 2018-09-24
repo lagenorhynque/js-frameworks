@@ -11,21 +11,21 @@
    ::create-channel [[:name st/required st/string]]
    ::fetch-channel [[:channel-id st/required st/number-str]]
    ::create-message [[:channel-id st/required st/number-str]
-                     [:user-id st/required st/number-str]
                      [:body st/required st/string]]})
 
 (defn list-channels [{:keys [db]}]
   (response/ok {:data (db.channels/find-channels db)}))
 
-(defn create-channel [{:keys [db tx-data]}]
+(defn create-channel [{:keys [db session tx-data]}]
   (with-transaction [db]
-    (let [channel-name (:name tx-data)
+    (let [user-id (get-in session [:user :id])
+          channel-name (:name tx-data)
           channel-id (db.channels/create-channel db {:name channel-name})
           messages [{:body (str "Welcome to " channel-name " channel!")
-                     :user-id 1
+                     :user-id user-id
                      :channel-id channel-id}
                     {:body "はじめてのメッセージを投稿してみましょう。"
-                     :user-id 1
+                     :user-id user-id
                      :channel-id channel-id}]]
       (db.messages/create-messages db messages)
       (response/ok {:data {:id channel-id}}))))
@@ -40,11 +40,11 @@
     (response/ok {:data (db.messages/find-messages-by-channel db (:channel-id tx-data))})
     (response/not-found {:errors {:channel-id "doesn't exist"}})))
 
-(defn create-message [{:keys [db tx-data]}]
+(defn create-message [{:keys [db session tx-data]}]
   (with-transaction [db]
     (if (db.channels/find-channel-by-id db (:channel-id tx-data))
-      (if (db.users/find-user-by-id db (:user-id tx-data))
-        (let [message-id (db.messages/create-message db tx-data)]
-          (response/ok {:data {:id message-id}}))
-        (response/bad-request {:errors {:user-id "doesn't exist"}}))
+      (let [user-id (get-in session [:user :id])
+            message-id (db.messages/create-message db (assoc tx-data
+                                                             :user-id user-id))]
+        (response/ok {:data {:id message-id}}))
       (response/not-found {:errors {:channel-id "doesn't exist"}}))))
