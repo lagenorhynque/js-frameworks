@@ -8,23 +8,27 @@
   :once
   helper/instrument-specs)
 
-(t/deftest test-login-logout
+(t/deftest test-login-error
   (with-system [sys (helper/test-system)]
     (with-db-data [sys {:users db-data/users}]
-      (t/testing "validation error"
+      (t/testing "バリデーションエラー"
         (let [{:keys [status body]}
               (helper/http-post sys "/api/authentication"
                                 (helper/->json {}))]
           (t/is (= 400 status))
-          (t/is (= [:uid] (-> body helper/<-json :errors keys)))))
-      (t/testing "specified user doesn't exist"
+          (t/is (= #{:uid} (-> body helper/<-json :errors keys set)))))
+      (t/testing "ユーザが存在しないとエラー"
         (let [{:keys [status body]}
               (helper/http-post sys "/api/authentication"
                                 (helper/->json {:uid "yosoro"}))]
           (t/is (= 404 status))
-          (t/is (= {:errors {:uid "doesn't exist"}} (helper/<-json body)))))
+          (t/is (= {:errors {:uid "doesn't exist"}} (helper/<-json body))))))))
+
+(t/deftest test-login-logout
+  (with-system [sys (helper/test-system)]
+    (with-db-data [sys {:users db-data/users}]
       (with-session
-        (t/testing "login successfully"
+        (t/testing "ログインに成功する"
           (let [{:keys [status body]}
                 (helper/http-post sys "/api/authentication"
                                   (helper/->json {:uid "lagenorhynque"}))]
@@ -32,20 +36,22 @@
             (t/is (= {:data {:id 2
                              :uid "lagenorhynque"
                              :name "lagénorhynque"
-                             :avatar ""}} (helper/<-json body)))))
-        (t/testing "user info is stored in session after login"
+                             :avatar ""}}
+                     (helper/<-json body)))))
+        (t/testing "ログインするとユーザ情報が取得できる"
           (let [{:keys [status body]}
                 (helper/http-get sys "/api/authentication")]
             (t/is (= 200 status))
             (t/is (= {:data {:id 2
                              :uid "lagenorhynque"
                              :name "lagénorhynque"
-                             :avatar ""}} (helper/<-json body)))))
-        (t/testing "logout successfully"
+                             :avatar ""}}
+                     (helper/<-json body)))))
+        (t/testing "ログアウトに成功する"
           (let [{:keys [status body]}
                 (helper/http-delete sys "/api/authentication")]
             (t/is (= 204 status))))
-        (t/testing "user info is deleted from session after logout"
+        (t/testing "ログアウトするとユーザ情報が取得できなくなる"
           (let [{:keys [status body]}
                 (helper/http-get sys "/api/authentication")]
             (t/is (= 401 status))))))))

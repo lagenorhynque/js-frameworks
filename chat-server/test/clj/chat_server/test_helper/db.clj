@@ -6,6 +6,8 @@
 
 (s/def ::name string?)
 (s/def ::table (s/keys :req-un [::name]))
+(s/def ::db-data-map (s/map-of keyword?
+                               (s/coll-of ::db/row-map :min-count 1)))
 
 (s/fdef select-tables
   :args (s/cat :db ::db/db)
@@ -35,6 +37,17 @@
 (defn set-foreign-key-checks! [{:keys [spec]} enabled?]
   (jdbc/execute! spec [(str "set @@session.foreign_key_checks = "
                             (if enabled? 1 0))]))
+
+(s/fdef insert-db-data!
+  :args (s/cat :db ::db/db
+               :db-data-map ::db-data-map)
+  :ret any?)
+
+(defn insert-db-data! [db db-data-map]
+  (set-foreign-key-checks! db false)
+  (doseq [[table records] db-data-map]
+    (db/insert-multi! db table records))
+  (set-foreign-key-checks! db true))
 
 (s/fdef truncate-all-tables!
   :args (s/cat :db ::db/db)
