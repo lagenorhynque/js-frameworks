@@ -10,6 +10,7 @@ jobs:
         TEST_DATABASE_URL: "jdbc:mysql://localhost:3306/chat_server_test?user=chat_server_dev&password=password123&useSSL=false"
         TEST_REDIS_PORT: 6379
     - image: mysql:5.7
+      command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
       environment:
         MYSQL_ROOT_PASSWORD: root
         MYSQL_USER: chat_server_dev
@@ -31,3 +32,9 @@ jobs:
         paths:
         - /root/.lein
         - /root/.m2
+    - run:
+        command: |
+          mkdir -p ~/test-results/junit
+          cp chat-server/target/coverage/*.xml ~/test-results/junit/
+    - store_test_results:
+        path: ~/test-results

@@ -41,7 +41,7 @@
                  :dependencies   [[clj-http "3.9.1" :exclusions [potemkin]]
                                   [com.bhauman/rebel-readline "0.1.4"]
                                   [com.gearswithingears/shrubbery "0.4.1"]
-                                  [eftest "0.5.2"]
+                                  [eftest "0.5.3"]
                                   [integrant/repl "0.3.1"]
                                   [io.pedestal/pedestal.service-tools "0.5.4"]
                                   [orchestra "2018.08.19-1"]
@@ -58,17 +58,22 @@
                            "rebel" ^{:doc "Run REPL with rebel-readline."}
                            ["trampoline" "run" "-m" "rebel-readline.main"]
                            "test-coverage" ^{:doc "Execute cloverage."}
-                           ["cloverage" "--ns-exclude-regex" "^(:?dev|user)$" "--codecov"]
+                           ["with-profile" "test"
+                            "cloverage" "--ns-exclude-regex" "^(:?dev|user)$" "--codecov" "--junit"]
                            "lint" ^{:doc "Execute cljfmt check, eastwood and kibit."}
                            ["do"
                             ["cljfmt" "check"]
                             ["eastwood" "{:config-files [\"dev/resources/eastwood_config.clj\"]
+                                          :source-paths [\"src/clj\"]
                                           :test-paths []}"]
                             ["kibit"]]}
                  :injections [(require 'pjstadig.humane-test-output)
                               (pjstadig.humane-test-output/activate!)]
                  :cljfmt {:indents {fdef [[:inner 0]]
-                                    for-all [[:inner 0]]}}}
+                                    for-all [[:inner 0]]}}
+                 :codox {:output-path "target/codox"
+                         :source-uri "https://github.com/lagenorhynque/js-frameworks/blob/master/chat-server/{filepath}#L{line}"
+                         :metadata {:doc/format :markdown}}}
    :project/test {}
    :project/uberjar {:aot :all
                      :uberjar-name "chat-server.jar"}

@@ -12,6 +12,7 @@ services:
       MYSQL_USER: chat_server_dev
       MYSQL_PASSWORD: password123
       MYSQL_DATABASE: chat_server
+      TZ: "Asia/Tokyo"
 
   mysql-test:
     image: mysql:5.7
@@ -25,6 +26,7 @@ services:
       MYSQL_USER: chat_server_dev
       MYSQL_PASSWORD: password123
       MYSQL_DATABASE: chat_server_test
+      TZ: "Asia/Tokyo"
 
   redis:
     image: redis:4.0

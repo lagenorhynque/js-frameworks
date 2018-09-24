@@ -138,6 +138,7 @@
                                                 :body "Welcome to general channel!"
                                                 :user_id 1
                                                 :channel_id 1
+                                                :date "2018-08-01T00:00:00+09:00"
                                                 :user_uid "anon"
                                                 :user_name "Anonymous"
                                                 :user_avatar ""
@@ -145,7 +146,12 @@
                                                {:id 2
                                                 :body "はじめてのメッセージを投稿してみましょう。"
                                                 :user_id 1
-                                                :channel_id 1}]}}}
+                                                :channel_id 1
+                                                :date "2018-08-01T00:00:00+09:00"
+                                                :user_uid "anon"
+                                                :user_name "Anonymous"
+                                                :user_avatar ""
+                                                :channel_name "general"}]}}}
                             400
                             {:$ref "#/responses/bad_request"}
                             404
@@ -201,7 +207,17 @@
                           :user_id {:type :integer
                                     :description "ユーザID"}
                           :channel_id {:type :integer
-                                       :description "チャンネルID"}}
+                                       :description "チャンネルID"}
+                          :date {:type :string
+                                 :description "投稿日"}
+                          :user_uid {:type :string
+                                     :description "UID"}
+                          :user_name {:type :string
+                                      :description "ユーザ名"}
+                          :user_avatar {:type :string
+                                        :description "アバター"}
+                          :channel_name {:type :string
+                                         :description "チャンネル名"}}
                          :required [:body :user_id]
                          :example {:body "Hello, world!"
                                    :user_id 2}}

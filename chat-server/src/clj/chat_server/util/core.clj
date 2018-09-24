@@ -8,8 +8,8 @@
 (defn ->snake_case [v]
   (csk/->snake_case v :separator \-))
 
-(defn transform-keys-to-kebab [m]
-  (transform-keys ->kebab-case m))
+(defn transform-keys-to-kebab [coll]
+  (transform-keys ->kebab-case coll))
 
-(defn transform-keys-to-snake [m]
-  (transform-keys ->snake_case m))
+(defn transform-keys-to-snake [coll]
+  (transform-keys ->snake_case coll))

@@ -21,6 +21,13 @@
 (defn read-config []
   (duct/read-config (io/resource "dev.edn")))
 
+(defn reset []
+  (integrant.repl/reset)
+  (with-out-str (stest/instrument))
+  nil)
+
+;;; unit testing
+
 (defn test
   ([]
    (eftest/run-tests (eftest/find-tests "test")
@@ -28,18 +35,6 @@
   ([sym]
    (eftest/run-tests (eftest/find-tests sym)
                      {:multithread? false})))
-
-(clojure.tools.namespace.repl/set-refresh-dirs "dev/src" "src" "test")
-
-(when (io/resource "local.clj")
-  (load "local"))
-
-(integrant.repl/set-prep! (comp ig/prep duct/prep read-config))
-
-(defn reset []
-  (integrant.repl/reset)
-  (with-out-str (stest/instrument))
-  nil)
 
 ;;; DB migration
 
@@ -69,3 +64,12 @@
 (defn db-rollback [env]
   (validate-env env)
   (ragtime.repl/rollback (load-migration-config env)))
+
+;;; namespace settings
+
+(clojure.tools.namespace.repl/set-refresh-dirs "dev/src" "src" "test")
+
+(when (io/resource "local.clj")
+  (load "local"))
+
+(integrant.repl/set-prep! (comp ig/prep duct/prep read-config))

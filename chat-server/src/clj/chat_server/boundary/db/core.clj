@@ -28,7 +28,8 @@
 
 ;;; DB access utilities
 
-(s/def ::db any?)
+(s/def ::spec any?)
+(s/def ::db (s/keys :req-un [::spec]))
 (s/def ::sql-map (s/map-of keyword? any?))
 (s/def ::table keyword?)
 (s/def ::row-map (s/map-of keyword? any?))
@@ -36,7 +37,9 @@
 (s/def ::row-id (s/and integer? pos?))
 
 (s/fdef with-transaction
-  :args (s/cat :binding (s/tuple any?)
+  :args (s/cat :binding (s/coll-of any?
+                                   :kind vector
+                                   :count 1)
                :body (s/* any?)))
 
 (defmacro with-transaction [[db] & body]
@@ -48,13 +51,16 @@
        (let [~'db (duct.database.sql/->Boundary ~'db)]
          ~@body))))
 
+(def quoting :mysql)
+(def identifier-quote \`)
+
 (s/fdef select
   :args (s/cat :db ::db
                :sql-map ::sql-map)
   :ret (s/coll-of ::row-map))
 
 (defn select [{:keys [spec]} sql-map]
-  (jdbc/query spec (sql/format sql-map :quoting :mysql)
+  (jdbc/query spec (sql/format sql-map :quoting quoting)
               {:identifiers util/->kebab-case}))
 
 (s/fdef select-one
@@ -72,7 +78,7 @@
   :ret ::row-id)
 
 (defn insert! [{:keys [spec]} table row-map]
-  (-> (jdbc/insert! spec table row-map {:entities (comp (jdbc/quoted \`)
+  (-> (jdbc/insert! spec table row-map {:entities (comp (jdbc/quoted identifier-quote)
                                                         util/->snake_case)})
       first
       :generated_key))
@@ -86,4 +92,4 @@
 (defn insert-multi! [{:keys [spec]} table row-maps]
   (first (jdbc/execute! spec (sql/format (sql/build :insert-into table
                                                     :values row-maps)
-                                         :quoting :mysql))))
+                                         :quoting quoting))))
