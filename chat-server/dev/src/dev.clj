@@ -22,9 +22,9 @@
   (duct/read-config (io/resource "dev.edn")))
 
 (defn reset []
-  (integrant.repl/reset)
-  (with-out-str (stest/instrument))
-  nil)
+  (let [result (integrant.repl/reset)]
+    (with-out-str (stest/instrument))
+    result))
 
 ;;; unit testing
 
