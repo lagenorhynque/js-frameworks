@@ -22,4 +22,4 @@ COPY --from=build-stage /usr/src/app/target/chat-server.jar .
 
 EXPOSE 8080
 
-CMD ["java" "-jar" "chat-server.jar"]
+CMD ["java", "-jar", "chat-server.jar"]
