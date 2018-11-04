@@ -12,7 +12,7 @@ swagger.yaml: swagger.edn
 .PHONY: swagger-ui
 swagger-ui:
 	@make swagger.json
-	@docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/api/swagger.json -v `pwd`:/api swaggerapi/swagger-ui
+	@docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/api/swagger.json -v `pwd`:/api swaggerapi/swagger-ui:v3.19.4
 
 # Run dredd (API test tool)
 .PHONY: dredd
