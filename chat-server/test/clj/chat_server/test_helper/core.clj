@@ -82,7 +82,7 @@
 (def ^:private url-prefix "http://localhost:")
 
 (defn- server-port [system]
-  (get-in system [:chat-server.server/service :io.pedestal.http/port]))
+  (get-in system [:duct.server/pedestal :io.pedestal.http/port]))
 
 (defn http-get [system url & options]
   (client/get (str url-prefix (server-port system) url)
