@@ -7,10 +7,12 @@
  :schemes [:http]
  :consumes ["application/json;charset=utf-8"]
  :produces ["application/json;charset=utf-8"]
+
  :tags [{:name :authentication
          :description "認証"}
         {:name :channels
          :description "チャンネル"}]
+
  :paths {"/authentication"
          {:get {:tags [:authentication]
                 :summary "ログインユーザ情報の取得"
@@ -28,6 +30,7 @@
                                                :avatar ""}}}}
                             401
                             {:$ref "#/responses/unauthorized"}}}
+
           :post {:tags [:authentication]
                  :summary "ログイン"
                  :description ""
@@ -53,12 +56,14 @@
                                                 :avatar ""}}}}
                              400
                              {:$ref "#/responses/not_found"}}}
+
           :delete {:tags [:authentication]
                    :summary "ログアウト"
                    :description ""
                    :parameters []
                    :responses {204
                                {:description "204 No Content"}}}}
+
          "/channels"
          {:get {:tags [:channels]
                 :summary "チャンネル名の一覧取得"
@@ -75,6 +80,7 @@
                                                 :name "general"}
                                                {:id 2
                                                 :name "random"}]}}}}}
+
           :post {:tags [:channels]
                  :summary "チャンネルの作成"
                  :description ""
@@ -95,6 +101,7 @@
                                :example {:data {:id 3}}}}
                              400
                              {:$ref "#/responses/bad_request"}}}}
+
          "/channels/{channel_id}"
          {:get {:tags [:channels]
                 :summary "チャンネルの取得"
@@ -117,6 +124,7 @@
                             {:$ref "#/responses/bad_request"}
                             404
                             {:$ref "#/responses/not_found"}}}}
+
          "/channels/{channel_id}/messages"
          {:get {:tags [:channels]
                 :summary "チャンネル内メッセージの一覧取得"
@@ -156,6 +164,7 @@
                             {:$ref "#/responses/bad_request"}
                             404
                             {:$ref "#/responses/not_found"}}}
+
           :post {:tags [:channels]
                  :summary "指定チャンネルへのメッセージの追加"
                  :description ""
@@ -184,12 +193,14 @@
                              {:$ref "#/responses/bad_request"}
                              404
                              {:$ref "#/responses/not_found"}}}}}
+
  :responses {:bad_request {:description "400 Bad Request"
                            :schema {:$ref "#/definitions/error"}}
              :unauthorized {:description "401 Unauthorized"
                             :schema {:$ref "#/definitions/error"}}
              :not_found {:description "404 Not Found"
                          :schema {:$ref "#/definitions/error"}}}
+
  :definitions {:channel {:type :object
                          :properties
                          {:id {:type :integer
@@ -198,6 +209,7 @@
                                  :description "チャンネル名"}}
                          :required [:name]
                          :example {:name "times_twitter"}}
+
                :message {:type :object
                          :properties
                          {:id {:type :integer
@@ -221,6 +233,7 @@
                          :required [:body :user_id]
                          :example {:body "Hello, world!"
                                    :user_id 2}}
+
                :user {:type :object
                       :properties
                       {:id {:type :integer
@@ -234,6 +247,7 @@
                       :required [:uid :name]
                       :example {:uid "lagenorhynque"
                                 :name "lagénorhynque"}}
+
                :error {:type :object
                        :properties
                        {:errors {:type :object}}}}}

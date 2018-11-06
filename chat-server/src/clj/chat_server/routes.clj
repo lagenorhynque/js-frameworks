@@ -31,19 +31,20 @@
                            (interceptor/validate validation-schemas)
                            (interceptor/attach-database db)]]
     #(route/expand-routes
-      #{["/api/authentication" :get (conj common-interceptors
-                                          `authentication/fetch-user)]
-        ["/api/authentication" :post (conj auth-interceptors
-                                           `authentication/login)]
-        ["/api/authentication" :delete (conj auth-interceptors
-                                             `authentication/logout)]
-        ["/api/channels" :get (conj common-interceptors
-                                    `channels/list-channels)]
-        ["/api/channels" :post (conj common-interceptors
-                                     `channels/create-channel)]
-        ["/api/channels/:channel-id" :get (conj common-interceptors
-                                                `channels/fetch-channel)]
-        ["/api/channels/:channel-id/messages" :get (conj common-interceptors
-                                                         `channels/list-channel-messages)]
-        ["/api/channels/:channel-id/messages" :post (conj common-interceptors
-                                                          `channels/create-message)]})))
+      #{["/api/authentication" :get
+         (conj common-interceptors `authentication/fetch-user)]
+        ["/api/authentication" :post
+         (conj auth-interceptors `authentication/login)]
+        ["/api/authentication" :delete
+         (conj auth-interceptors `authentication/logout)]
+
+        ["/api/channels" :get
+         (conj common-interceptors `channels/list-channels)]
+        ["/api/channels" :post
+         (conj common-interceptors `channels/create-channel)]
+        ["/api/channels/:channel-id" :get
+         (conj common-interceptors `channels/fetch-channel)]
+        ["/api/channels/:channel-id/messages" :get
+         (conj common-interceptors `channels/list-channel-messages)]
+        ["/api/channels/:channel-id/messages" :post
+         (conj common-interceptors `channels/create-message)]})))

@@ -63,12 +63,12 @@
   (jdbc/query spec (sql/format sql-map :quoting quoting)
               {:identifiers util/->kebab-case}))
 
-(s/fdef select-one
+(s/fdef select-first
   :args (s/cat :db ::db
                :sql-map ::sql-map)
   :ret (s/nilable ::row-map))
 
-(defn select-one [db sql-map]
+(defn select-first [db sql-map]
   (first (select db sql-map)))
 
 (s/fdef insert!

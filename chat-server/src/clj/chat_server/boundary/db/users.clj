@@ -36,12 +36,12 @@
   (create-user [db user]
     (db/insert! db :users user))
   (find-user-by-id [db user-id]
-    (db/select-one db (sql/build
-                       :select :*
-                       :from :users
-                       :where [:= :id user-id])))
+    (db/select-first db (sql/build
+                         :select :*
+                         :from :users
+                         :where [:= :id user-id])))
   (find-user-by-uid [db user-uid]
-    (db/select-one db (sql/build
-                       :select :*
-                       :from :users
-                       :where [:= :uid user-uid]))))
+    (db/select-first db (sql/build
+                         :select :*
+                         :from :users
+                         :where [:= :uid user-uid]))))

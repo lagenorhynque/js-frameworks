@@ -16,8 +16,15 @@
 (s/def ::user-name ::users/name)
 (s/def ::user-avatar ::users/avatar)
 (s/def ::channel-name ::channels/name)
-(s/def ::message (s/keys :req-un [::body ::user-id ::channel-id]
-                         :opt-un [::id ::date ::user-uid ::user-name ::user-avatar ::channel-name]))
+(s/def ::message (s/keys :req-un [::body
+                                  ::user-id
+                                  ::channel-id]
+                         :opt-un [::id
+                                  ::date
+                                  ::user-uid
+                                  ::user-name
+                                  ::user-avatar
+                                  ::channel-name]))
 
 (s/fdef create-message
   :args (s/cat :db ::db/db

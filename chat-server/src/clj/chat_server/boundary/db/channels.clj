@@ -38,7 +38,7 @@
                    :from :channels
                    :order-by [[:name :asc] [:id :asc]])))
   (find-channel-by-id [db channel-id]
-    (db/select-one db (sql/build
-                       :select :*
-                       :from :channels
-                       :where [:= :id channel-id]))))
+    (db/select-first db (sql/build
+                         :select :*
+                         :from :channels
+                         :where [:= :id channel-id]))))
