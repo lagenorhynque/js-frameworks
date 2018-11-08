@@ -43,7 +43,7 @@
             (let [{:keys [status body]}
                   (helper/http-post sys "/api/channels" (helper/->json {}))]
               (t/is (= 400 status))
-              (t/is (= #{:name} (-> body helper/<-json :errors keys set)))))
+              (t/is (= #{:name} (helper/json-errors-keyset body)))))
           (t/testing "チャンネルが新規作成できる"
             (let [{:keys [status body]}
                   (helper/http-post sys "/api/channels" channel)]
@@ -91,7 +91,7 @@
           (let [{:keys [status body]}
                 (helper/http-get sys "/api/channels/foo")]
             (t/is (= 400 status))
-            (t/is (= #{:channel-id} (-> body helper/<-json :errors keys set)))))
+            (t/is (= #{:channel-id} (helper/json-errors-keyset body)))))
         (t/testing "チャンネルが存在しないとエラー"
           (let [{:keys [status]}
                 (helper/http-get sys "/api/channels/100")]
@@ -118,7 +118,7 @@
           (let [{:keys [status body]}
                 (helper/http-get sys "/api/channels/foo/messages")]
             (t/is (= 400 status))
-            (t/is (= #{:channel-id} (-> body helper/<-json :errors keys set)))))
+            (t/is (= #{:channel-id} (helper/json-errors-keyset body)))))
         (t/testing "チャンネルが存在しないとエラー"
           (let [{:keys [status]}
                 (helper/http-get sys "/api/channels/100/messages")]
@@ -169,7 +169,7 @@
             (let [{:keys [status body]}
                   (helper/http-post sys "/api/channels/foo/messages" (helper/->json {}))]
               (t/is (= 400 status))
-              (t/is (= #{:channel-id :body} (-> body helper/<-json :errors keys set)))))
+              (t/is (= #{:channel-id :body} (helper/json-errors-keyset body)))))
           (t/testing "チャンネルが存在しないとエラー"
             (let [{:keys [status]}
                   (helper/http-post sys "/api/channels/100/messages" message)]

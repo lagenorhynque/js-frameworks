@@ -16,7 +16,7 @@
               (helper/http-post sys "/api/authentication"
                                 (helper/->json {}))]
           (t/is (= 400 status))
-          (t/is (= #{:uid} (-> body helper/<-json :errors keys set)))))
+          (t/is (= #{:uid} (helper/json-errors-keyset body)))))
       (t/testing "ユーザが存在しないとエラー"
         (let [{:keys [status body]}
               (helper/http-post sys "/api/authentication"

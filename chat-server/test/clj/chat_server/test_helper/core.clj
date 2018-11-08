@@ -119,3 +119,10 @@
   (-> str
       (cheshire/parse-string true)
       util/transform-keys-to-kebab))
+
+;;; misc.
+
+(defn json-errors-keyset
+  "JSON文字列をオブジェクトに変換したときの `:errors` のキーのセットを返す。"
+  [json]
+  (-> json <-json :errors keys set))
