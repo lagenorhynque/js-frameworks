@@ -84,26 +84,26 @@
 (defn- server-port [system]
   (get-in system [:duct.server/pedestal :io.pedestal.http/port]))
 
-(defn http-get [system url & options]
+(defn http-get [system url & {:as options}]
   (client/get (str url-prefix (server-port system) url)
               (merge {:accept :json
                       :throw-exceptions? false} options)))
 
-(defn http-post [system url body & options]
+(defn http-post [system url body & {:as options}]
   (client/post (str url-prefix (server-port system) url)
                (merge {:body body
                        :content-type :json
                        :accept :json
                        :throw-exceptions? false} options)))
 
-(defn http-put [system url body & options]
+(defn http-put [system url body & {:as options}]
   (client/put (str url-prefix (server-port system) url)
               (merge {:body body
                       :content-type :json
                       :accept :json
                       :throw-exceptions? false} options)))
 
-(defn http-delete [system url & options]
+(defn http-delete [system url & {:as options}]
   (client/delete (str url-prefix (server-port system) url)
                  (merge {:accept :json
                          :throw-exceptions? false} options)))
