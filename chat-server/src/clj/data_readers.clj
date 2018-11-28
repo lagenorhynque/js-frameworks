@@ -1,1 +1,1 @@
-{time/inst chat-server.util.instant/->time-inst}
+{time/inst chat-server.util.time/->time-inst}

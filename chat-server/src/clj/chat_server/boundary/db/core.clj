@@ -1,6 +1,6 @@
 (ns chat-server.boundary.db.core
   (:require [chat-server.util.core :as util]
-            [chat-server.util.instant]
+            [chat-server.util.time]
             [clojure.java.jdbc :as jdbc]
             [clojure.spec.alpha :as s]
             [duct.database.sql]
