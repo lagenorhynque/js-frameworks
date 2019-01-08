@@ -1,5 +1,26 @@
-{:duct.core/project-ns  chat-server
- :duct.core/environment :production
+{:duct.profile/base
+ {:duct.core/project-ns  chat-server
+  :duct.core/environment :production
+
+  :duct.migrator/ragtime {}
+
+  :duct.database.redis/carmine
+  {:spec {:host #duct/env "REDIS_HOST"
+          :port #duct/env ["REDIS_PORT" Int :or 6379]}}
+
+  :duct.server/pedestal
+  {:service #:io.pedestal.http{:routes #ig/ref :chat-server.routes/routes
+                               :host #duct/env "SERVER_HOST"
+                               :port #duct/env ["SERVER_PORT" Int :or 8080]}}
+
+  :chat-server.routes/routes
+  {:db #ig/ref :duct.database/sql
+   :redis #ig/ref :duct.database.redis/carmine}}
+
+ :duct.profile/dev #duct/include "dev"
+ :duct.profile/test #duct/include "test"
+ :duct.profile/local #duct/include "local"
+ :duct.profile/prod {}
 
  :duct.module/logging {}
 
@@ -7,18 +28,4 @@
  {:database-url #duct/env "DATABASE_URL"
   :driver-class-name "com.mysql.cj.jdbc.Driver"}
 
- :duct.migrator/ragtime {}
-
- :duct.database.redis/carmine
- {:spec {:host #duct/env "REDIS_HOST"
-         :port #duct/env ["REDIS_PORT" Int :or 6379]}}
-
- :duct.module/pedestal {}
- :duct.server/pedestal
- {:service #:io.pedestal.http{:routes #ig/ref :chat-server.routes/routes
-                              :host #duct/env "SERVER_HOST"
-                              :port #duct/env ["SERVER_PORT" Int :or 8080]}}
-
- :chat-server.routes/routes
- {:db #ig/ref :duct.database/sql
-  :redis #ig/ref :duct.database.redis/carmine}}
+ :duct.module/pedestal {}}

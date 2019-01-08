@@ -19,7 +19,7 @@
 (duct/load-hierarchy)
 
 (defn read-config []
-  (duct/read-config (io/resource "dev.edn")))
+  (duct/read-config (io/resource "chat_server/config.edn")))
 
 (defn reset []
   (let [result (integrant.repl/reset)]
@@ -38,23 +38,21 @@
 
 ;;; DB migration
 
-(def env-files
-  {"dev" "dev.edn"
-   "test" "test.edn"
-   "prod" "chat_server/config.edn"})
+(def env-profiles
+  {"dev"  [:duct.profile/dev :duct.profile/local]
+   "test" [:duct.profile/dev :duct.profile/test]
+   "prod" [:duct.profile/prod]})
 
 (defn- validate-env [env]
-  (when-not (some #{env} (keys env-files))
+  (when-not (some #{env} (keys env-profiles))
     (throw (IllegalArgumentException. (format "env `%s` is undefined" env)))))
 
 (defn- load-migration-config [env]
-  (when-let [f (get env-files env)]
-    (let [{{:keys [database-url]} :duct.module/sql
+  (when-let [profiles (get env-profiles env)]
+    (let [{{:keys [jdbc-url]} :duct.database.sql/hikaricp
            {:keys [migrations]} :duct.migrator/ragtime}
-          (-> (duct/read-config (io/resource f))
-              duct/prep
-              ig/prep)]
-      {:datastore (ragtime.jdbc/sql-database database-url)
+          (duct/prep-config (read-config) profiles)]
+      {:datastore (ragtime.jdbc/sql-database jdbc-url)
        :migrations migrations})))
 
 (defn db-migrate [env]
@@ -72,4 +70,7 @@
 (when (io/resource "local.clj")
   (load "local"))
 
-(integrant.repl/set-prep! (comp ig/prep duct/prep read-config))
+(def profiles
+  (get env-profiles "dev"))
+
+(integrant.repl/set-prep! #(duct/prep-config (read-config) profiles))

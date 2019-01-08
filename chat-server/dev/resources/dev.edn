@@ -1,8 +1,7 @@
 {:duct.core/environment :development
- :duct.core/include ["chat_server/config"]
-
- :duct.module/sql
- {:database-url "jdbc:mysql://localhost:3307/chat_server?user=chat_server_dev&password=password123&useSSL=false"}
 
  :duct.database.redis/carmine
- {:spec {:host "127.0.0.1"}}}
+ {:spec {:host "127.0.0.1"}}
+
+ :duct.database.sql/hikaricp
+ {:jdbc-url "jdbc:mysql://localhost:3307/chat_server?user=chat_server_dev&password=password123&useSSL=false"}}

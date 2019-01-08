@@ -1,11 +1,10 @@
 {:duct.core/environment :development
- :duct.core/include ["dev"]
-
- :duct.module/sql
- {:database-url #duct/env ["TEST_DATABASE_URL" :or "jdbc:mysql://localhost:3308/chat_server_test?user=chat_server_dev&password=password123&useSSL=false"]}
 
  :duct.database.redis/carmine
  {:spec {:port #duct/env ["TEST_REDIS_PORT" Int :or 6380]}}
 
  :duct.server/pedestal
- {:service #:io.pedestal.http{:port 8081}}}
+ {:service #:io.pedestal.http{:port 8081}}
+
+ :duct.database.sql/hikaricp
+ {:jdbc-url #duct/env ["TEST_DATABASE_URL" :or "jdbc:mysql://localhost:3308/chat_server_test?user=chat_server_dev&password=password123&useSSL=false"]}}
