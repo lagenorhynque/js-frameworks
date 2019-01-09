@@ -14,7 +14,7 @@
                  [metosin/ring-http-response "0.9.1"]
                  [mysql/mysql-connector-java "8.0.13"]
                  [org.clojure/clojure "1.10.0"]]
-  :plugins [[duct/lein-duct "0.11.0"]]
+  :plugins [[duct/lein-duct "0.11.1"]]
   :main ^:skip-aot chat-server.main
   :source-paths   ["src/clj"]
   :test-paths ["test/clj"]
