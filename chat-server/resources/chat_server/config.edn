@@ -1,6 +1,5 @@
 {:duct.profile/base
  {:duct.core/project-ns  chat-server
-  :duct.core/environment :production
 
   :duct.migrator/ragtime {}
 

@@ -1,6 +1,4 @@
-{:duct.core/environment :development
-
- :duct.database.redis/carmine
+{:duct.database.redis/carmine
  {:spec {:port #duct/env ["TEST_REDIS_PORT" Int :or 6380]}}
 
  :duct.server/pedestal

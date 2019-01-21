@@ -1,6 +1,4 @@
-{:duct.core/environment :development
-
- :duct.database.redis/carmine
+{:duct.database.redis/carmine
  {:spec {:host "127.0.0.1"}}
 
  :duct.database.sql/hikaricp
