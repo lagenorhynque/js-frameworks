@@ -112,8 +112,8 @@
 
 (defn ->json [obj]
   (-> obj
-      cheshire/generate-string
-      util/transform-keys-to-snake))
+      util/transform-keys-to-snake
+      cheshire/generate-string))
 
 (defn <-json [str]
   (-> str
