@@ -50,8 +50,7 @@
                            "rebel" ^{:doc "Run REPL with rebel-readline."}
                            ["trampoline" "run" "-m" "rebel-readline.main"]
                            "test-coverage" ^{:doc "Execute cloverage."}
-                           ["with-profile" "test"
-                            "cloverage" "--ns-exclude-regex" "^(:?dev|user)$" "--codecov" "--junit"]
+                           ["cloverage" "--ns-exclude-regex" "^(:?dev|user)$" "--codecov" "--junit"]
                            "lint" ^{:doc "Execute cljfmt check, eastwood and kibit."}
                            ["do"
                             ["cljfmt" "check"]
