@@ -18,3 +18,4 @@ swagger.json
 /.cpcache
 node_modules/
 npm-debug.log*
+.eastwood
