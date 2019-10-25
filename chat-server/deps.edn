@@ -1,3 +1,4 @@
-{:deps {cheshire {:mvn/version "5.8.1"}
-        io.forward/yaml {:mvn/version "1.0.9"}}
+{:deps {cheshire {:mvn/version "5.9.0"}
+        io.forward/yaml {:mvn/version "1.0.9"}
+        org.flatland/ordered {:mvn/version "1.5.7"}}
  :paths ["scripts"]}

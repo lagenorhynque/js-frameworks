@@ -8,7 +8,7 @@
         migration-number (if-let [fname (->> fnames sort reverse first)]
                            (-> (re-matches #"(\d+).*" fname)
                                second
-                               (#(Integer/parseInt %))
+                               Long/parseLong
                                inc)
                            1)
         new-fname (format "%03d-%s" migration-number migration-name)]
