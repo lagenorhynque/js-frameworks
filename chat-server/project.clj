@@ -4,7 +4,7 @@
   :min-lein-version "2.8.1"
   :dependencies [[camel-snake-kebab "0.4.0"]
                  [clojure.java-time "0.3.2"]
-                 [duct.module.cambium "0.1.0"]
+                 [duct.module.cambium "1.0.0"]
                  [duct.module.pedestal "2.0.2" :exclusions [ring/ring-core]]
                  [duct/core "0.7.0"]
                  [duct/database.redis.carmine "0.1.1"]
