@@ -4,17 +4,17 @@
             [java-time.zone :as time.zone])
   (:import (java.time ZonedDateTime)))
 
-;;; tagged literal `#time/inst`
+;;; tagged literal `#inst/date-time`
 
 (defmethod print-method ZonedDateTime
   [^ZonedDateTime dt ^java.io.Writer out]
-  (.write out (str "#time/inst \"" (time.format/format :iso-offset-date-time dt) "\"")))
+  (.write out (str "#inst/date-time \"" (time.format/format :iso-offset-date-time dt) "\"")))
 
 (defmethod print-dup ZonedDateTime
   [^ZonedDateTime dt ^java.io.Writer out]
   (print-method dt out))
 
-(defn ->time-inst [dt-str]
+(defn ->date-time [dt-str]
   (time.zone/zoned-date-time dt-str))
 
 ;;; JSON encoding
