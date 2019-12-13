@@ -2,18 +2,20 @@
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :min-lein-version "2.8.1"
-  :dependencies [[camel-snake-kebab "0.4.0"]
+  :dependencies [[camel-snake-kebab "0.4.1"]
                  [clojure.java-time "0.3.2"]
-                 [duct.module.cambium "1.0.0"]
-                 [duct.module.pedestal "2.0.2" :exclusions [ring/ring-core]]
-                 [duct/core "0.7.0"]
+                 [duct.module.cambium "1.1.0" :exclusions [org.slf4j/slf4j-api]]
+                 [duct.module.pedestal "2.1.1"]
+                 [duct/core "0.8.0"]
                  [duct/database.redis.carmine "0.1.1"]
-                 [duct/module.sql "0.5.0"]
+                 [duct/module.sql "0.6.0"]
                  [funcool/struct "1.4.0" :exclusions [org.clojure/clojurescript]]
                  [honeysql "0.9.8"]
                  [metosin/ring-http-response "0.9.1"]
                  [mysql/mysql-connector-java "8.0.18"]
-                 [org.clojure/clojure "1.10.1"]]
+                 [org.clojure/clojure "1.10.1"]
+                 [org.clojure/java.jdbc "0.7.10"]
+                 [ring/ring-core "1.8.0"]]
   :plugins [[duct/lein-duct "0.12.1"]]
   :middleware [lein-duct.plugin/middleware]
   :main ^:skip-aot chat-server.main
@@ -34,16 +36,17 @@
                  :dependencies   [[clj-http "3.10.0" :exclusions [potemkin]]
                                   [com.bhauman/rebel-readline "0.1.4"]
                                   [com.gearswithingears/shrubbery "0.4.1"]
-                                  [eftest "0.5.9" :exclusions [fipp
-                                                               org.clojure/core.rrb-vector]]
+                                  [eftest "0.5.9"]
+                                  [fipp "0.6.22"]
+                                  [hawk "0.2.11"]
                                   [integrant/repl "0.3.1"]
                                   [orchestra "2019.02.06-1"]
                                   [pjstadig/humane-test-output "0.10.0"]]
                  :plugins [[jonase/eastwood "0.3.6"]
-                           [lein-cljfmt "0.6.4"]
+                           [lein-cljfmt "0.6.6"]
                            [lein-cloverage "1.1.2"]
                            [lein-codox "0.10.7"]
-                           [lein-kibit "0.1.7"]]
+                           [lein-kibit "0.1.8"]]
                  :aliases {"db-migrate" ^{:doc "Migrate DB to the latest migration."}
                            ["run" "-m" "dev/db-migrate"]
                            "db-rollback" ^{:doc "Rollback DB one migration."}
